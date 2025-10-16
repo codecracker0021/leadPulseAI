@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - LeadPulseAI</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 70px 1fr;
+            height: 100vh;
+            background: var(--background);
+        }
+
+        .top-nav {
+            grid-column: 1 / -1;
+            background: white;
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar {
+            background: var(--navy-blue);
+            color: white;
+            padding: var(--space-lg);
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            margin-bottom: var(--space-sm);
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            background: var(--aia-red);
+            color: white;
+        }
+
+        .nav-item.demo {
+            background: var(--ai-purple);
+            margin-top: var(--space-lg);
+        }
+
+        .main-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+        }
+
+        .calendar-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+
+        .calendar-sidebar {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            height: fit-content;
+        }
+
+        .mini-calendar {
+            margin-bottom: var(--space-lg);
+        }
+
+        .month-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .month-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--navy-blue);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .day-name {
+            font-size: 10px;
+            color: var(--medium);
+            text-align: center;
+            padding: 4px;
+            font-weight: 600;
+        }
+
+        .day-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .day-cell:hover {
+            background: var(--background);
+        }
+
+        .day-cell.today {
+            background: var(--aia-red);
+            color: white;
+            font-weight: 700;
+        }
+
+        .day-cell.has-events {
+            background: rgba(147, 51, 234, 0.1);
+            font-weight: 600;
+            position: relative;
+        }
+
+        .day-cell.has-events::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            width: 4px;
+            height: 4px;
+            background: var(--ai-purple);
+            border-radius: 50%;
+        }
+
+        .upcoming-list {
+            margin-top: var(--space-lg);
+        }
+
+        .upcoming-item {
+            padding: var(--space-sm);
+            background: var(--background);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-sm);
+            font-size: 12px;
+        }
+
+        .upcoming-time {
+            color: var(--aia-red);
+            font-weight: 600;
+        }
+
+        .calendar-main {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .view-tabs {
+            display: flex;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+            border-bottom: 2px solid var(--light);
+        }
+
+        .view-tab {
+            padding: var(--space-md) var(--space-lg);
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--medium);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .view-tab:hover {
+            color: var(--navy-blue);
+        }
+
+        .view-tab.active {
+            color: var(--aia-red);
+            border-bottom-color: var(--aia-red);
+        }
+
+        .timeline-view {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .day-section {
+            border-left: 3px solid var(--light);
+            padding-left: var(--space-lg);
+            position: relative;
+        }
+
+        .day-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy-blue);
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .event-card {
+            background: var(--background);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+            border-left: 4px solid var(--ai-purple);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(4px);
+        }
+
+        .event-card.ai-call {
+            border-left-color: var(--ai-purple);
+        }
+
+        .event-card.human-call {
+            border-left-color: var(--success);
+        }
+
+        .event-card.email {
+            border-left-color: var(--sky-blue);
+        }
+
+        .event-card.sms {
+            border-left-color: var(--warning);
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-sm);
+        }
+
+        .event-time {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy-blue);
+        }
+
+        .event-type {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .event-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy-blue);
+            margin-bottom: 4px;
+        }
+
+        .event-lead {
+            font-size: 14px;
+            color: var(--medium);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .event-meta {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-md);
+            font-size: 12px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--medium);
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--gradient-primary));
+            color: white;
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* Week View Styles */
+        .week-view {
+            display: none;
+        }
+
+        .week-view.active {
+            display: block;
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr);
+            gap: 1px;
+            background: var(--light);
+            border: 1px solid var(--light);
+        }
+
+        .week-header {
+            background: var(--background);
+            padding: var(--space-md);
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--navy-blue);
+        }
+
+        .week-header.time-column {
+            background: white;
+        }
+
+        .time-slot {
+            background: white;
+            padding: var(--space-sm);
+            text-align: right;
+            font-size: 11px;
+            color: var(--medium);
+            border-right: 2px solid var(--light);
+        }
+
+        .day-column {
+            background: white;
+            min-height: 60px;
+            position: relative;
+            padding: 4px;
+        }
+
+        .day-column:hover {
+            background: rgba(147, 51, 234, 0.02);
+        }
+
+        .week-event {
+            background: linear-gradient(135deg, var(--ai-purple), #764ba2);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-bottom: 2px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .week-event:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .week-event.human-call {
+            background: linear-gradient(135deg, var(--success), #00C853);
+        }
+
+        .week-event.email {
+            background: linear-gradient(135deg, var(--sky-blue), #4facfe);
+        }
+
+        .week-event.sms {
+            background: linear-gradient(135deg, var(--warning), #FFB347);
+        }
+
+        /* Month View Styles */
+        .month-view {
+            display: none;
+        }
+
+        .month-view.active {
+            display: block;
+        }
+
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--light);
+            border: 1px solid var(--light);
+        }
+
+        .month-day-header {
+            background: var(--background);
+            padding: var(--space-md);
+            text-align: center;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--navy-blue);
+        }
+
+        .month-day-cell {
+            background: white;
+            min-height: 120px;
+            padding: var(--space-sm);
+            position: relative;
+        }
+
+        .month-day-cell:hover {
+            background: rgba(147, 51, 234, 0.02);
+        }
+
+        .month-day-cell.other-month {
+            background: var(--background);
+            opacity: 0.5;
+        }
+
+        .month-day-cell.today {
+            background: rgba(228, 5, 33, 0.05);
+            border: 2px solid var(--aia-red);
+        }
+
+        .month-day-number {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--navy-blue);
+            margin-bottom: 4px;
+        }
+
+        .month-event {
+            background: var(--ai-purple);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            margin-bottom: 2px;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .month-event:hover {
+            background: #764ba2;
+        }
+
+        .month-event.human-call {
+            background: var(--success);
+        }
+
+        .month-event.email {
+            background: var(--sky-blue);
+        }
+
+        .month-event.sms {
+            background: var(--warning);
+        }
+
+        .event-count {
+            font-size: 10px;
+            color: var(--medium);
+            margin-top: 4px;
+        }
+
+        .timeline-view {
+            display: none;
+        }
+
+        .timeline-view.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="logo">
+                <span class="logo-icon">🎯</span>
+                <span>LeadPulseAI</span>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-ghost">
+                    <span>🔔</span>
+                    <span class="badge badge-danger" style="margin-left: 4px;">12</span>
+                </button>
+                <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                    <span style="font-size: 14px; color: var(--medium);">Agent Dashboard</span>
+                    <div class="avatar" style="width: 36px; height: 36px; font-size: 14px;">AD</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav>
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="calling.html" class="nav-item">
+                    <span>📞</span>
+                    <span>AI Calling Center</span>
+                </a>
+                <a href="leads-pipeline.html" class="nav-item">
+                    <span>👥</span>
+                    <span>Leads Pipeline</span>
+                </a>
+                <a href="analytics.html" class="nav-item">
+                    <span>📊</span>
+                    <span>Analytics & ROI</span>
+                </a>
+                <a href="campaigns.html" class="nav-item">
+                    <span>🎯</span>
+                    <span>Campaigns</span>
+                </a>
+                <a href="calendar.html" class="nav-item active">
+                    <span>📅</span>
+                    <span>Calendar</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span>
+                    <span>Settings</span>
+                </a>
+                <div style="margin: var(--space-lg) 0; height: 1px; background: rgba(255,255,255,0.2);"></div>
+                <a href="demo-mode.html" class="nav-item demo">
+                    <span>🎬</span>
+                    <span>Demo Mode</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xl);">
+                <div>
+                    <h1 style="font-size: 32px; margin: 0 0 8px 0; color: var(--navy-blue);">Calendar</h1>
+                    <p style="color: var(--medium); margin: 0;">All scheduled touchpoints, calls, and appointments</p>
+                </div>
+                <div style="display: flex; gap: var(--space-md);">
+                    <button class="btn btn-ghost">
+                        <span>⬇️</span>
+                        <span>Sync to Outlook</span>
+                    </button>
+                    <button class="btn btn-primary">
+                        <span>➕</span>
+                        <span>Schedule Appointment</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="stat-value">47</div>
+                    <div class="stat-label">Calls This Week</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <div class="stat-value">23</div>
+                    <div class="stat-label">Appointments Scheduled</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Follow-ups Due</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <div class="stat-value">89%</div>
+                    <div class="stat-label">Appointment Show Rate</div>
+                </div>
+            </div>
+
+            <!-- Calendar Container -->
+            <div class="calendar-container">
+                <!-- Left Sidebar -->
+                <div class="calendar-sidebar">
+                    <div class="mini-calendar">
+                        <div class="month-header">
+                            <button class="btn btn-ghost btn-sm">◀</button>
+                            <span class="month-name">October 2025</span>
+                            <button class="btn btn-ghost btn-sm">▶</button>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="day-name">S</div>
+                            <div class="day-name">M</div>
+                            <div class="day-name">T</div>
+                            <div class="day-name">W</div>
+                            <div class="day-name">T</div>
+                            <div class="day-name">F</div>
+                            <div class="day-name">S</div>
+                            <!-- Days populated by JS -->
+                            <div class="day-cell"></div>
+                            <div class="day-cell"></div>
+                            <div class="day-cell"></div>
+                            <div class="day-cell">1</div>
+                            <div class="day-cell">2</div>
+                            <div class="day-cell">3</div>
+                            <div class="day-cell">4</div>
+                            <div class="day-cell has-events">5</div>
+                            <div class="day-cell has-events">6</div>
+                            <div class="day-cell">7</div>
+                            <div class="day-cell">8</div>
+                            <div class="day-cell has-events">9</div>
+                            <div class="day-cell has-events">10</div>
+                            <div class="day-cell">11</div>
+                            <div class="day-cell">12</div>
+                            <div class="day-cell has-events">13</div>
+                            <div class="day-cell has-events">14</div>
+                            <div class="day-cell has-events">15</div>
+                            <div class="day-cell today">16</div>
+                            <div class="day-cell has-events">17</div>
+                            <div class="day-cell">18</div>
+                            <div class="day-cell">19</div>
+                            <div class="day-cell has-events">20</div>
+                            <div class="day-cell">21</div>
+                            <div class="day-cell has-events">22</div>
+                            <div class="day-cell">23</div>
+                            <div class="day-cell">24</div>
+                            <div class="day-cell">25</div>
+                            <div class="day-cell">26</div>
+                            <div class="day-cell">27</div>
+                            <div class="day-cell">28</div>
+                            <div class="day-cell">29</div>
+                            <div class="day-cell">30</div>
+                            <div class="day-cell">31</div>
+                        </div>
+                    </div>
+
+                    <div class="upcoming-list">
+                        <h4 style="margin: 0 0 var(--space-md) 0; color: var(--navy-blue);">Upcoming Today</h4>
+                        <div class="upcoming-item">
+                            <div class="upcoming-time">2:00 PM</div>
+                            <div style="font-size: 13px; color: var(--navy-blue); margin-top: 4px;">AI Call - David Lim</div>
+                        </div>
+                        <div class="upcoming-item">
+                            <div class="upcoming-time">5:30 PM</div>
+                            <div style="font-size: 13px; color: var(--navy-blue); margin-top: 4px;">Meeting - Amanda Ng</div>
+                        </div>
+                        <div class="upcoming-item">
+                            <div class="upcoming-time">7:00 PM</div>
+                            <div style="font-size: 13px; color: var(--navy-blue); margin-top: 4px;">Sarah Chen - Follow-up</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Calendar -->
+                <div class="calendar-main">
+                    <div class="view-tabs">
+                        <button class="view-tab active" onclick="switchView('timeline')">Timeline</button>
+                        <button class="view-tab" onclick="switchView('week')">Week</button>
+                        <button class="view-tab" onclick="switchView('month')">Month</button>
+                    </div>
+
+                    <div class="timeline-view active" id="timelineView">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                    <div class="week-view" id="weekView">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                    <div class="month-view" id="monthView">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        // Generate calendar events from all leads
+        const calendarEvents = [
+            // Today - Oct 16
+            {
+                date: 'Today',
+                dateLabel: 'October 16, 2025 (Today)',
+                events: [
+                    {
+                        time: '10:00 AM',
+                        type: 'ai-call',
+                        typeLabel: 'AI Call',
+                        title: 'Property Protection Follow-up',
+                        lead: 'David Lim',
+                        leadId: 'LC-2025-8475',
+                        duration: '12 min',
+                        campaign: 'Property Purchase Protection',
+                        status: 'Scheduled'
+                    },
+                    {
+                        time: '2:00 PM',
+                        type: 'email',
+                        typeLabel: 'Email Campaign',
+                        title: 'Competitor Comparison Analysis',
+                        lead: 'David Lim',
+                        leadId: 'LC-2025-8475',
+                        campaign: 'Property Purchase Protection',
+                        status: 'Queued'
+                    },
+                    {
+                        time: '5:30 PM',
+                        type: 'human-call',
+                        typeLabel: 'Agent Meeting',
+                        title: 'Final Application Review',
+                        lead: 'Amanda Ng',
+                        leadId: 'LC-2025-8476',
+                        duration: '20 min',
+                        agent: 'Sharon Koh',
+                        status: 'Confirmed'
+                    },
+                    {
+                        time: '7:00 PM',
+                        type: 'ai-call',
+                        typeLabel: 'AI Call',
+                        title: 'Pre-Appointment Check-in',
+                        lead: 'Sarah Chen',
+                        leadId: 'LC-2025-8472',
+                        duration: '8 min',
+                        campaign: 'Pregnancy Nurture Campaign',
+                        status: 'Scheduled'
+                    }
+                ]
+            },
+            // Tomorrow - Oct 17
+            {
+                date: 'Tomorrow',
+                dateLabel: 'October 17, 2025 (Tomorrow)',
+                events: [
+                    {
+                        time: '9:00 AM',
+                        type: 'ai-call',
+                        typeLabel: 'AI Call',
+                        title: 'Coverage Review Reminder',
+                        lead: 'Linda Wong',
+                        leadId: 'LC-2025-8474',
+                        duration: '6 min',
+                        campaign: 'Policy Anniversary Upsell',
+                        status: 'Scheduled'
+                    },
+                    {
+                        time: '11:30 AM',
+                        type: 'email',
+                        typeLabel: 'Email',
+                        title: 'Educational Content - Critical Illness',
+                        lead: 'Michael Tan',
+                        leadId: 'LC-2025-8473',
+                        campaign: 'Young Professionals Campaign',
+                        status: 'Queued'
+                    },
+                    {
+                        time: '7:00 PM',
+                        type: 'human-call',
+                        typeLabel: 'Specialist Appointment',
+                        title: 'Maternity Coverage Consultation',
+                        lead: 'Sarah Chen',
+                        leadId: 'LC-2025-8472',
+                        duration: '30 min',
+                        agent: 'Rachel Tan',
+                        status: 'Confirmed'
+                    }
+                ]
+            },
+            // Oct 18
+            {
+                date: 'Oct 18',
+                dateLabel: 'October 18, 2025',
+                events: [
+                    {
+                        time: '2:00 PM',
+                        type: 'sms',
+                        typeLabel: 'SMS Campaign',
+                        title: 'Appointment Reminder',
+                        lead: 'Sarah Chen',
+                        leadId: 'LC-2025-8472',
+                        campaign: 'Pregnancy Nurture Campaign',
+                        status: 'Scheduled'
+                    },
+                    {
+                        time: '6:00 PM',
+                        type: 'ai-call',
+                        typeLabel: 'AI Call',
+                        title: 'Post-Meeting Follow-up',
+                        lead: 'Amanda Ng',
+                        leadId: 'LC-2025-8476',
+                        duration: '10 min',
+                        campaign: 'Entrepreneur Program',
+                        status: 'Scheduled'
+                    }
+                ]
+            },
+            // Oct 20
+            {
+                date: 'Oct 20',
+                dateLabel: 'October 20, 2025',
+                events: [
+                    {
+                        time: '10:00 AM',
+                        type: 'human-call',
+                        typeLabel: 'Agent Call',
+                        title: 'Policy Upgrade Discussion',
+                        lead: 'Linda Wong',
+                        leadId: 'LC-2025-8474',
+                        duration: '25 min',
+                        agent: 'Patricia Ng',
+                        status: 'Scheduled'
+                    },
+                    {
+                        time: '4:00 PM',
+                        type: 'ai-call',
+                        typeLabel: 'AI Call',
+                        title: 'Application Status Update',
+                        lead: 'Michael Tan',
+                        leadId: 'LC-2025-8473',
+                        duration: '7 min',
+                        campaign: 'Young Professionals Campaign',
+                        status: 'Scheduled'
+                    }
+                ]
+            }
+        ];
+
+        function renderTimeline() {
+            const timeline = document.getElementById('timelineView');
+            timeline.innerHTML = '';
+
+            calendarEvents.forEach(dayData => {
+                const daySection = document.createElement('div');
+                daySection.className = 'day-section';
+
+                const dayLabel = document.createElement('div');
+                dayLabel.className = 'day-label';
+                dayLabel.innerHTML = `
+                    <span>📅</span>
+                    <span>${dayData.dateLabel}</span>
+                    <span class="badge badge-medium" style="margin-left: 8px;">${dayData.events.length} events</span>
+                `;
+                daySection.appendChild(dayLabel);
+
+                dayData.events.forEach(event => {
+                    const eventCard = document.createElement('div');
+                    eventCard.className = `event-card ${event.type}`;
+                    eventCard.onclick = () => location.href = `lead-profile.html?id=${event.leadId}`;
+
+                    const statusBadge = event.status === 'Confirmed' ? 'badge-success' :
+                                       event.status === 'Scheduled' ? 'badge-info' : 'badge-warning';
+
+                    const typeIcon = {
+                        'ai-call': '🤖',
+                        'human-call': '👤',
+                        'email': '📧',
+                        'sms': '💬'
+                    };
+
+                    eventCard.innerHTML = `
+                        <div class="event-header">
+                            <div>
+                                <div class="event-time">${event.time}</div>
+                                <div class="event-type" style="color: var(--ai-purple);">${typeIcon[event.type]} ${event.typeLabel}</div>
+                            </div>
+                            <span class="badge ${statusBadge}">${event.status}</span>
+                        </div>
+                        <div class="event-title">${event.title}</div>
+                        <div class="event-lead">
+                            <span>👤</span>
+                            <span><strong>${event.lead}</strong></span>
+                        </div>
+                        <div class="event-meta">
+                            ${event.duration ? `<div class="meta-item"><span>⏱️</span><span>${event.duration}</span></div>` : ''}
+                            ${event.agent ? `<div class="meta-item"><span>👨‍💼</span><span>${event.agent}</span></div>` : ''}
+                            ${event.campaign ? `<div class="meta-item"><span>🎯</span><span>${event.campaign}</span></div>` : ''}
+                        </div>
+                    `;
+
+                    daySection.appendChild(eventCard);
+                });
+
+                timeline.appendChild(daySection);
+            });
+        }
+
+        // Render Week View
+        function renderWeekView() {
+            const weekView = document.getElementById('weekView');
+            weekView.innerHTML = '';
+
+            const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const weekDates = ['13', '14', '15', '16', '17', '18', '19'];
+            const timeSlots = ['8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM'];
+
+            // Create week grid
+            const grid = document.createElement('div');
+            grid.className = 'week-grid';
+
+            // Header row
+            grid.innerHTML = '<div class="week-header time-column"></div>';
+            weekDays.forEach((day, index) => {
+                const isToday = weekDates[index] === '16';
+                grid.innerHTML += `
+                    <div class="week-header ${isToday ? 'today' : ''}">
+                        <div style="font-weight: 700;">${day}</div>
+                        <div style="font-size: 12px; color: var(--medium); margin-top: 4px;">Oct ${weekDates[index]}</div>
+                    </div>
+                `;
+            });
+
+            // Time slots and events
+            const weekEvents = {
+                '16-10': { time: '10 AM', lead: 'David L.', title: 'Property Call', type: 'ai-call' },
+                '16-14': { time: '2 PM', lead: 'David L.', title: 'Email', type: 'email' },
+                '16-17': { time: '5 PM', lead: 'Amanda N.', title: 'Meeting', type: 'human-call' },
+                '16-19': { time: '7 PM', lead: 'Sarah C.', title: 'Check-in', type: 'ai-call' },
+                '17-9': { time: '9 AM', lead: 'Linda W.', title: 'Review', type: 'ai-call' },
+                '17-11': { time: '11 AM', lead: 'Michael T.', title: 'Email', type: 'email' },
+                '17-19': { time: '7 PM', lead: 'Sarah C.', title: 'Specialist', type: 'human-call' },
+                '18-14': { time: '2 PM', lead: 'Sarah C.', title: 'SMS Reminder', type: 'sms' },
+                '18-18': { time: '6 PM', lead: 'Amanda N.', title: 'Follow-up', type: 'ai-call' },
+                '20-10': { time: '10 AM', lead: 'Linda W.', title: 'Upgrade Call', type: 'human-call' },
+                '20-16': { time: '4 PM', lead: 'Michael T.', title: 'Status Call', type: 'ai-call' }
+            };
+
+            timeSlots.forEach(timeSlot => {
+                // Time label
+                grid.innerHTML += `<div class="time-slot">${timeSlot}</div>`;
+
+                // Day columns
+                weekDates.forEach(date => {
+                    const cellKey = `${date}-${timeSlots.indexOf(timeSlot) + 8}`;
+                    const event = weekEvents[cellKey];
+
+                    let cellContent = '';
+                    if (event) {
+                        cellContent = `
+                            <div class="week-event ${event.type}" onclick="showEventDetails('${event.lead}')">
+                                <div style="font-weight: 600; margin-bottom: 2px;">${event.lead}</div>
+                                <div style="opacity: 0.9;">${event.title}</div>
+                            </div>
+                        `;
+                    }
+
+                    grid.innerHTML += `<div class="day-column">${cellContent}</div>`;
+                });
+            });
+
+            weekView.appendChild(grid);
+        }
+
+        // Render Month View
+        function renderMonthView() {
+            const monthView = document.getElementById('monthView');
+            monthView.innerHTML = '';
+
+            const monthDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+            // Create month grid
+            const grid = document.createElement('div');
+            grid.className = 'month-grid';
+
+            // Day headers
+            monthDays.forEach(day => {
+                grid.innerHTML += `<div class="month-day-header">${day}</div>`;
+            });
+
+            // Month events by date
+            const monthEvents = {
+                5: [{ title: 'David Birthday Call', type: 'ai-call' }, { title: 'Email Campaign', type: 'email' }],
+                6: [{ title: 'Linda Follow-up', type: 'ai-call' }],
+                9: [{ title: 'Michael Check-in', type: 'ai-call' }, { title: 'Sarah Email', type: 'email' }],
+                10: [{ title: 'Amanda Meeting', type: 'human-call' }],
+                13: [{ title: 'Property Call', type: 'ai-call' }],
+                14: [{ title: 'Review Call', type: 'ai-call' }, { title: 'SMS Campaign', type: 'sms' }],
+                15: [{ title: 'Specialist Prep', type: 'human-call' }],
+                16: [
+                    { title: 'David Property Call', type: 'ai-call' },
+                    { title: 'Amanda Meeting', type: 'human-call' },
+                    { title: 'Sarah Check-in', type: 'ai-call' }
+                ],
+                17: [
+                    { title: 'Linda Review', type: 'ai-call' },
+                    { title: 'Sarah Specialist', type: 'human-call' }
+                ],
+                18: [{ title: 'SMS Reminder', type: 'sms' }, { title: 'Amanda Follow-up', type: 'ai-call' }],
+                20: [{ title: 'Linda Upgrade', type: 'human-call' }, { title: 'Michael Status', type: 'ai-call' }],
+                22: [{ title: 'Policy Review', type: 'ai-call' }],
+                25: [{ title: 'Birthday Campaign', type: 'ai-call' }, { title: 'Email Blast', type: 'email' }],
+                27: [{ title: 'Week Summary Call', type: 'human-call' }]
+            };
+
+            // Previous month days (Sep 28-30)
+            for (let i = 28; i <= 30; i++) {
+                grid.innerHTML += `
+                    <div class="month-day-cell other-month">
+                        <div class="month-day-number">${i}</div>
+                    </div>
+                `;
+            }
+
+            // Current month days (Oct 1-31)
+            for (let day = 1; day <= 31; day++) {
+                const isToday = day === 16;
+                const events = monthEvents[day] || [];
+                const extraCount = events.length > 3 ? events.length - 3 : 0;
+
+                let eventsHTML = '';
+                events.slice(0, 3).forEach(event => {
+                    eventsHTML += `<div class="month-event ${event.type}">${event.title}</div>`;
+                });
+
+                if (extraCount > 0) {
+                    eventsHTML += `<div class="event-count">+${extraCount} more</div>`;
+                }
+
+                grid.innerHTML += `
+                    <div class="month-day-cell ${isToday ? 'today' : ''}">
+                        <div class="month-day-number">${day}</div>
+                        ${eventsHTML}
+                    </div>
+                `;
+            }
+
+            // Next month days (Nov 1-2)
+            for (let i = 1; i <= 2; i++) {
+                grid.innerHTML += `
+                    <div class="month-day-cell other-month">
+                        <div class="month-day-number">${i}</div>
+                    </div>
+                `;
+            }
+
+            monthView.appendChild(grid);
+        }
+
+        // Switch between views
+        function switchView(viewType) {
+            // Update active tab
+            document.querySelectorAll('.view-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Hide all views
+            document.getElementById('timelineView').classList.remove('active');
+            document.getElementById('weekView').classList.remove('active');
+            document.getElementById('monthView').classList.remove('active');
+
+            // Show selected view
+            if (viewType === 'timeline') {
+                document.getElementById('timelineView').classList.add('active');
+            } else if (viewType === 'week') {
+                document.getElementById('weekView').classList.add('active');
+                renderWeekView();
+            } else if (viewType === 'month') {
+                document.getElementById('monthView').classList.add('active');
+                renderMonthView();
+            }
+        }
+
+        function showEventDetails(leadName) {
+            alert(`Event Details for ${leadName}\n\nClick OK to view full lead profile.`);
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            renderTimeline();
+            renderWeekView();
+            renderMonthView();
+        });
+    </script>
+</body>
+</html>

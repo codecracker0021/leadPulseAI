@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics & ROI - LeadPulseAI</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: var(--background);
+            margin: 0;
+        }
+
+        .analytics-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+        }
+
+        .page-header {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--aia-red);
+        }
+
+        .kpi-card.success::before { background: var(--success); }
+        .kpi-card.info::before { background: var(--info); }
+        .kpi-card.warning::before { background: var(--warning); }
+        .kpi-card.purple::before { background: var(--ai-purple); }
+
+        .kpi-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--medium);
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .kpi-value {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--navy-blue);
+            margin-bottom: var(--space-sm);
+            font-family: var(--font-mono);
+        }
+
+        .kpi-change {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .kpi-change.positive { color: var(--success); }
+        .kpi-change.negative { color: var(--danger); }
+
+        .chart-container {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--space-lg);
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-xl);
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--navy-blue);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2xl);
+            margin-bottom: var(--space-lg);
+        }
+
+        .comparison-column {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .comparison-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 2px solid var(--light);
+        }
+
+        .funnel-step {
+            margin-bottom: var(--space-lg);
+        }
+
+        .funnel-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-sm);
+            font-size: 14px;
+        }
+
+        .funnel-bar {
+            height: 40px;
+            background: var(--light);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .funnel-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--aia-red) 0%, var(--success) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            transition: width 1s ease-out;
+        }
+
+        .roi-card {
+            background: linear-gradient(135deg, #00C853 0%, #00E676 100%);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .roi-value {
+            font-size: 72px;
+            font-weight: 700;
+            margin: var(--space-lg) 0;
+            font-family: var(--font-mono);
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+        }
+
+        .impact-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+        }
+
+        .impact-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .impact-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 1024px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="analytics-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-content">
+                <div>
+                    <a href="dashboard.html" style="color: var(--sky-blue); text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: var(--space-sm);">
+                        ← Back to Dashboard
+                    </a>
+                    <h1 style="font-size: 32px; color: var(--navy-blue); margin: 0;">Analytics & ROI Dashboard</h1>
+                    <p style="color: var(--medium); margin-top: 8px;">Real-time business impact metrics and performance analytics</p>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 12px; color: var(--medium);">Last Updated</div>
+                    <div style="font-weight: 600; color: var(--navy-blue);" id="lastUpdated">Just now</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Performance Indicators -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">Total Revenue This Month</div>
+                <div class="kpi-value" id="totalRevenue">$0</div>
+                <div class="kpi-change positive">
+                    <span>↗️</span>
+                    <span>+$1.8M vs September</span>
+                </div>
+            </div>
+
+            <div class="kpi-card success">
+                <div class="kpi-label">Conversion Rate</div>
+                <div class="kpi-value" id="conversionRate">0%</div>
+                <div class="kpi-change positive">
+                    <span>↗️</span>
+                    <span>+20.3pp vs baseline (32%)</span>
+                </div>
+            </div>
+
+            <div class="kpi-card info">
+                <div class="kpi-label">AI Calls Completed</div>
+                <div class="kpi-value" id="aiCalls">0</div>
+                <div class="kpi-change positive">
+                    <span>↗️</span>
+                    <span>+12% vs last month</span>
+                </div>
+            </div>
+
+            <div class="kpi-card warning">
+                <div class="kpi-label">Avg Time to Convert</div>
+                <div class="kpi-value" id="avgTime">0</div>
+                <div class="kpi-change positive">
+                    <span>↘️</span>
+                    <span>-36 days improvement</span>
+                </div>
+            </div>
+
+            <div class="kpi-card purple">
+                <div class="kpi-label">Leads Under AI Nurturing</div>
+                <div class="kpi-value" id="leadsNurturing">0</div>
+                <div class="kpi-change positive">
+                    <span>↗️</span>
+                    <span>+15% capacity increase</span>
+                </div>
+            </div>
+
+            <div class="kpi-card success">
+                <div class="kpi-label">Hot Leads Ready</div>
+                <div class="kpi-value" id="hotLeads">0</div>
+                <div class="kpi-change positive">
+                    <span>↗️</span>
+                    <span>+42 vs yesterday</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI Showcase -->
+        <div class="roi-card">
+            <h2 style="font-size: 24px; margin: 0; opacity: 0.9;">💰 Return on Investment (Year 1 Projection)</h2>
+            <div class="roi-value" id="roiValue">0%</div>
+            <p style="font-size: 18px; opacity: 0.9;">$159M revenue impact on $2.45M investment</p>
+
+            <div class="impact-grid">
+                <div class="impact-item">
+                    <div class="impact-value">$64M</div>
+                    <div class="impact-label">Increased Conversions</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">$28M</div>
+                    <div class="impact-label">Recovered Leakage</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">$22M</div>
+                    <div class="impact-label">Upsell/Cross-sell</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">$18M</div>
+                    <div class="impact-label">Agent Productivity</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">$15M</div>
+                    <div class="impact-label">Retention Gains</div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-value">$12M</div>
+                    <div class="impact-label">Faster Conversions</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversion Funnel Comparison -->
+        <div class="comparison-grid">
+            <div class="comparison-column">
+                <div class="comparison-title" style="color: var(--danger);">
+                    📉 BEFORE LeadPulseAI (Baseline)
+                </div>
+
+                <div class="funnel-step">
+                    <div class="funnel-label">
+                        <span>New Leads</span>
+                        <span><strong>10,000</strong> (100%)</span>
+                    </div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill" style="width: 100%; background: var(--light); color: var(--navy-blue);">
+                            100%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-step">
+                    <div class="funnel-label">
+                        <span>First Contact</span>
+                        <span><strong>7,200</strong> (72%)</span>
+                    </div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill" style="width: 72%; background: #FF9800;">
+                            72% (-28% loss)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-step">
+                    <div class="funnel-label">
+                        <span>Engaged</span>
+                        <span><strong>3,200</strong> (32%)</span>
+                    </div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill" style="width: 32%; background: #FF5722;">
+                            32% (-40% loss)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-step">
+                    <div class="funnel-label">
+                        <span>Converted</span>
+                        <span><strong>3,200</strong> (32%)</span>
+                    </div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill" style="width: 32%; background: var(--danger);">
+                            32% FINAL
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-xl); padding: var(--space-lg); background: rgba(244, 67, 54, 0.1); border-radius: var(--radius-md); text-align: center;">
+                    <div style="font-size: 14px; color: var(--medium); margin-bottom: 4px;">Revenue</div>
+                    <div style="font-size: 32px; font-weight: 700; color: var(--danger);">$10.2M</div>
+                    <div style="font-size: 14px; color: var(--danger); margin-top: 8px; font-weight: 600;">
+                        68% Lead Leakage 🔴
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-column">
+                <div class="comparison-title" style="color: var(--success);">
+                    📈 AFTER LeadPulseAI (With AI)
+                </div>
+
+                <div class="funnel-step">
+                    <div class="funnel-label">
+                        <span>New Leads</span>
+                        <span><strong>10,000</strong> (100%)</span>
+                    </div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill" style="width: 100%;">
+                            100%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-step">
+                    <div class="funnel-label">
+                        <span>First Contact</span>
+                        <span><strong>8,500</strong> (85%)</span>
+                    </div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill" style="width: 85%;">
+                            85% (-15% loss)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-step">
+                    <div class="funnel-label">
+                        <span>Engaged</span>
+                        <span><strong>6,700</strong> (67%)</span>
+                    </div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill" style="width: 67%;">
+                            67% (-18% loss)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-step">
+                    <div class="funnel-label">
+                        <span>Qualified</span>
+                        <span><strong>8,200</strong> (82%)</span>
+                    </div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill" style="width: 82%;">
+                            82% qualified
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-step">
+                    <div class="funnel-label">
+                        <span>Converted</span>
+                        <span><strong>5,200</strong> (52%)</strong>
+                    </div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill" style="width: 52%; background: var(--success);">
+                            52% FINAL
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-xl); padding: var(--space-lg); background: rgba(0, 200, 83, 0.1); border-radius: var(--radius-md); text-align: center;">
+                    <div style="font-size: 14px; color: var(--medium); margin-bottom: 4px;">Revenue</div>
+                    <div style="font-size: 32px; font-weight: 700; color: var(--success);">$16.6M (+62%)</div>
+                    <div style="font-size: 14px; color: var(--success); margin-top: 8px; font-weight: 600;">
+                        Only 25% Lead Leakage 🟢
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Productivity -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">👤 Agent Productivity Transformation</h3>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2xl);">
+                <div>
+                    <h4 style="margin-bottom: var(--space-lg); color: var(--danger);">BEFORE LeadPulseAI</h4>
+                    <div style="margin-bottom: var(--space-md);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">Repetitive Follow-ups</span>
+                            <span style="font-weight: 600;">40% (16hrs)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-danger" style="width: 40%;"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-md);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">Data Entry & Admin</span>
+                            <span style="font-weight: 600;">20% (8hrs)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 20%; background: var(--warning);"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-md);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">Generic Info Calls</span>
+                            <span style="font-weight: 600;">15% (6hrs)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 15%; background: var(--warning);"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-md);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">🎯 High-Value Consultations</span>
+                            <span style="font-weight: 600; color: var(--success);">20% (8hrs)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-gradient" style="width: 20%;"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: var(--space-lg); padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm); text-align: center;">
+                        <div style="font-size: 12px; color: var(--medium);">Lead Capacity per Agent</div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--navy-blue);">50 leads</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="margin-bottom: var(--space-lg); color: var(--success);">AFTER LeadPulseAI</h4>
+                    <div style="margin-bottom: var(--space-md);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">AI Monitoring & Oversight</span>
+                            <span style="font-weight: 600;">8% (3hrs)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 8%; background: var(--info);"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-md);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">🎯 High-Value Consultations</span>
+                            <span style="font-weight: 600; color: var(--success);">65% (26hrs)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-gradient" style="width: 65%;"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-md);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">Strategic Planning</span>
+                            <span style="font-weight: 600;">20% (8hrs)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 20%; background: var(--sky-blue);"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-md);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">Team Coordination</span>
+                            <span style="font-weight: 600;">7% (3hrs)</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 7%; background: var(--sky-blue);"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: var(--space-lg); padding: var(--space-md); background: rgba(0, 200, 83, 0.1); border-radius: var(--radius-sm); text-align: center;">
+                        <div style="font-size: 12px; color: var(--medium);">Lead Capacity per Agent</div>
+                        <div style="font-size: 28px; font-weight: 700; color: var(--success);">200+ leads</div>
+                        <div style="font-size: 12px; color: var(--success); margin-top: 4px;">+300% increase</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Summary -->
+        <div style="background: white; border-radius: var(--radius-lg); padding: var(--space-2xl); box-shadow: var(--shadow-sm); text-align: center;">
+            <h3 style="font-size: 24px; color: var(--navy-blue); margin-bottom: var(--space-lg);">
+                📈 Business Impact Summary
+            </h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-xl);">
+                <div>
+                    <div style="font-size: 36px; font-weight: 700; color: var(--success);">+62%</div>
+                    <div style="font-size: 14px; color: var(--medium);">Revenue Increase</div>
+                </div>
+                <div>
+                    <div style="font-size: 36px; font-weight: 700; color: var(--success);">+300%</div>
+                    <div style="font-size: 14px; color: var(--medium);">Agent Capacity</div>
+                </div>
+                <div>
+                    <div style="font-size: 36px; font-weight: 700; color: var(--success);">-43pp</div>
+                    <div style="font-size: 14px; color: var(--medium);">Lead Leakage Reduced</div>
+                </div>
+                <div>
+                    <div style="font-size: 36px; font-weight: 700; color: var(--success);">-40%</div>
+                    <div style="font-size: 14px; color: var(--medium);">Faster Conversions</div>
+                </div>
+                <div>
+                    <div style="font-size: 36px; font-weight: 700; color: var(--aia-red);">6,400%</div>
+                    <div style="font-size: 14px; color: var(--medium);">Year 1 ROI</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        // Animate values on load
+        function animateValue(element, start, end, duration, prefix = '', suffix = '') {
+            let current = start;
+            const range = end - start;
+            const increment = range / (duration / 16);
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = prefix + Math.round(current).toLocaleString() + suffix;
+            }, 16);
+        }
+
+        function formatCurrency(value) {
+            return '$' + (value / 1000000).toFixed(1) + 'M';
+        }
+
+        // Initialize dashboard
+        window.addEventListener('load', () => {
+            // Animate KPIs
+            setTimeout(() => {
+                const revenue = document.getElementById('totalRevenue');
+                animateValue(revenue, 0, 12400000, 2000);
+                setTimeout(() => {
+                    revenue.textContent = formatCurrency(12400000) + ' SGD';
+                }, 2000);
+            }, 300);
+
+            setTimeout(() => {
+                document.getElementById('conversionRate').textContent = '52.3%';
+            }, 500);
+
+            setTimeout(() => {
+                animateValue(document.getElementById('aiCalls'), 0, 45230, 1800);
+            }, 700);
+
+            setTimeout(() => {
+                document.getElementById('avgTime').textContent = '54 days';
+            }, 900);
+
+            setTimeout(() => {
+                animateValue(document.getElementById('leadsNurturing'), 0, 8450, 1600);
+            }, 1100);
+
+            setTimeout(() => {
+                animateValue(document.getElementById('hotLeads'), 0, 247, 1400);
+            }, 1300);
+
+            setTimeout(() => {
+                document.getElementById('roiValue').textContent = '6,400%';
+            }, 1500);
+
+            // Animate funnel bars
+            setTimeout(() => {
+                document.querySelectorAll('.funnel-fill').forEach((bar, index) => {
+                    setTimeout(() => {
+                        bar.style.opacity = '1';
+                    }, index * 200);
+                });
+            }, 2000);
+
+            // Update last updated time
+            setInterval(() => {
+                const now = new Date();
+                const time = now.toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('lastUpdated').textContent = time;
+            }, 60000);
+        });
+    </script>
+</body>
+</html>

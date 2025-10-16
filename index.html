@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadPulseAI - Voice-Enabled Lead Nurturing Platform</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #1B365D 0%, #2D5A8F 50%, #3A7BC8 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(228, 5, 33, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 204, 0.15) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-50px, -50px) rotate(5deg); }
+            66% { transform: translate(50px, 50px) rotate(-5deg); }
+        }
+
+        .login-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-2xl);
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-2xl);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: var(--space-lg);
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: var(--space-2xl);
+            line-height: 1.6;
+        }
+
+        .stats-ticker {
+            display: flex;
+            gap: var(--space-2xl);
+            padding: var(--space-lg);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-item {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: var(--space-2xl);
+            width: 100%;
+            max-width: 450px;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy-blue);
+            margin-bottom: var(--space-sm);
+        }
+
+        .login-subtitle {
+            color: var(--medium);
+            font-size: 14px;
+        }
+
+        .demo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .demo-banner:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .demo-banner-icon {
+            font-size: 32px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .demo-banner-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+        }
+
+        .demo-banner-text {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: var(--space-xl) 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .divider span {
+            padding: 0 var(--space-md);
+            color: var(--medium);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .role-card {
+            padding: var(--space-lg);
+            border: 2px solid var(--light);
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .role-card:hover {
+            border-color: var(--sky-blue);
+            background-color: rgba(0, 102, 204, 0.05);
+        }
+
+        .role-card.selected {
+            border-color: var(--aia-red);
+            background-color: rgba(228, 5, 33, 0.05);
+        }
+
+        .role-icon {
+            font-size: 32px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .role-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--navy-blue);
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+            margin-top: var(--space-2xl);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            color: var(--success);
+            font-size: 18px;
+        }
+
+        @media (max-width: 1024px) {
+            .login-container {
+                flex-direction: column;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .stats-ticker {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <div class="logo">
+                <div class="logo-icon">🎯</div>
+                <div class="logo-text">LeadPulseAI</div>
+            </div>
+
+            <h1 class="hero-title">
+                Transform Lead Nurturing<br>
+                with Voice-Enabled AI
+            </h1>
+
+            <p class="hero-subtitle">
+                Autonomous AI agents that make personalized voice calls, build relationships,
+                and convert leads while your agents focus on closing deals.
+            </p>
+
+            <div class="stats-ticker fade-in">
+                <div class="stat-item">
+                    <div class="stat-value">32,450</div>
+                    <div class="stat-label">Leads Nurtured Today</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1,247</div>
+                    <div class="stat-label">Appointments Booked</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">52.3%</div>
+                    <div class="stat-label">Conversion Rate</div>
+                </div>
+            </div>
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>AI Voice Calling</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>Real-time Sentiment Analysis</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>Automated Follow-ups</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>Intelligent Agent Handoff</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>Life-Cycle Triggers</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <span>ROI Analytics Dashboard</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-right">
+            <div class="login-card scale-in">
+                <div class="login-header">
+                    <h2 class="login-title">Welcome to LeadPulseAI</h2>
+                    <p class="login-subtitle">Select your experience to continue</p>
+                </div>
+
+                <!-- Demo Mode Banner -->
+                <div class="demo-banner" onclick="launchDemo()">
+                    <div class="demo-banner-icon">🎬</div>
+                    <div class="demo-banner-title">Launch Interactive Demo</div>
+                    <div class="demo-banner-text">
+                        Experience Sarah Chen's complete journey from cold lead to conversion
+                    </div>
+                </div>
+
+                <div class="divider">
+                    <span>or sign in as</span>
+                </div>
+
+                <!-- Role Selector -->
+                <div class="role-selector">
+                    <div class="role-card" onclick="selectRole('executive')" id="role-executive">
+                        <div class="role-icon">👔</div>
+                        <div class="role-name">Executive</div>
+                    </div>
+                    <div class="role-card selected" onclick="selectRole('manager')" id="role-manager">
+                        <div class="role-icon">📊</div>
+                        <div class="role-name">AI Manager</div>
+                    </div>
+                    <div class="role-card" onclick="selectRole('agent')" id="role-agent">
+                        <div class="role-icon">👤</div>
+                        <div class="role-name">Agent</div>
+                    </div>
+                </div>
+
+                <!-- Login Form -->
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input
+                            type="email"
+                            class="form-input"
+                            placeholder="you@aia.com"
+                            value="demo@aia.com"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input
+                            type="password"
+                            class="form-input"
+                            placeholder="••••••••"
+                            value="demo123"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-full btn-lg">
+                        Sign In to Dashboard
+                    </button>
+
+                    <p class="text-center text-sm text-medium mt-md">
+                        Demo credentials are pre-filled. Just click Sign In.
+                    </p>
+                </form>
+
+                <div class="mt-xl text-center">
+                    <p class="text-sm text-medium">
+                        Powered by <strong>AIA Singapore</strong> × <strong>AI Innovation Lab</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedRole = 'manager';
+
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.getElementById(`role-${role}`).classList.add('selected');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            // Add a subtle loading state
+            const btn = event.target.querySelector('button[type="submit"]');
+            btn.innerHTML = '<div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>';
+            btn.disabled = true;
+
+            // Simulate loading and redirect
+            setTimeout(() => {
+                window.location.href = 'dashboard.html?role=' + selectedRole;
+            }, 800);
+        }
+
+        function launchDemo() {
+            // Add subtle animation
+            const banner = document.querySelector('.demo-banner');
+            banner.style.transform = 'scale(0.98)';
+
+            setTimeout(() => {
+                window.location.href = 'demo-mode.html';
+            }, 200);
+        }
+
+        // Add dynamic animations on load
+        window.addEventListener('load', () => {
+            // Animate stats
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach((stat, index) => {
+                stat.style.opacity = '0';
+                setTimeout(() => {
+                    stat.style.transition = 'opacity 0.5s ease-in';
+                    stat.style.opacity = '1';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

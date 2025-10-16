@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaigns - LeadPulseAI</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 70px 1fr;
+            height: 100vh;
+            background: var(--background);
+        }
+
+        .top-nav {
+            grid-column: 1 / -1;
+            background: white;
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar {
+            background: var(--navy-blue);
+            color: white;
+            padding: var(--space-lg);
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            margin-bottom: var(--space-sm);
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            background: var(--aia-red);
+            color: white;
+        }
+
+        .nav-item.demo {
+            background: var(--ai-purple);
+            margin-top: var(--space-lg);
+        }
+
+        .main-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+        }
+
+        .campaigns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+
+        .campaign-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--space-xl);
+            transition: all var(--transition-normal);
+            border: 2px solid transparent;
+        }
+
+        .campaign-card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-4px);
+            border-color: var(--aia-red);
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-lg);
+        }
+
+        .campaign-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: var(--space-md);
+        }
+
+        .campaign-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy-blue);
+            margin: 0 0 8px 0;
+        }
+
+        .campaign-desc {
+            font-size: 14px;
+            color: var(--medium);
+            margin: 0 0 var(--space-lg) 0;
+            line-height: 1.6;
+        }
+
+        .campaign-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .stat-box {
+            padding: var(--space-md);
+            background: var(--background);
+            border-radius: var(--radius-sm);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--medium);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy-blue);
+        }
+
+        .campaign-progress {
+            margin-bottom: var(--space-lg);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 8px;
+            color: var(--medium);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--light);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .campaign-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-sm) 0;
+            font-size: 13px;
+        }
+
+        .metric-row:not(:last-child) {
+            border-bottom: 1px solid var(--light);
+        }
+
+        .metric-label {
+            color: var(--medium);
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: var(--navy-blue);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="logo">
+                <span class="logo-icon">🎯</span>
+                <span>LeadPulseAI</span>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-ghost">
+                    <span>🔔</span>
+                    <span class="badge badge-danger" style="margin-left: 4px;">12</span>
+                </button>
+                <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                    <span style="font-size: 14px; color: var(--medium);">Agent Dashboard</span>
+                    <div class="avatar" style="width: 36px; height: 36px; font-size: 14px;">AD</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav>
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="calling.html" class="nav-item">
+                    <span>📞</span>
+                    <span>AI Calling Center</span>
+                </a>
+                <a href="leads-pipeline.html" class="nav-item">
+                    <span>👥</span>
+                    <span>Leads Pipeline</span>
+                </a>
+                <a href="analytics.html" class="nav-item">
+                    <span>📊</span>
+                    <span>Analytics & ROI</span>
+                </a>
+                <a href="campaigns.html" class="nav-item active">
+                    <span>🎯</span>
+                    <span>Campaigns</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>📅</span>
+                    <span>Calendar</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span>
+                    <span>Settings</span>
+                </a>
+                <div style="margin: var(--space-lg) 0; height: 1px; background: rgba(255,255,255,0.2);"></div>
+                <a href="demo-mode.html" class="nav-item demo">
+                    <span>🎬</span>
+                    <span>Demo Mode</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xl);">
+                <div>
+                    <h1 style="font-size: 32px; margin: 0 0 8px 0; color: var(--navy-blue);">AI Campaigns</h1>
+                    <p style="color: var(--medium); margin: 0;">Automated nurture campaigns powered by AI</p>
+                </div>
+                <div style="display: flex; gap: var(--space-md);">
+                    <button class="btn btn-ghost">
+                        <span>📊</span>
+                        <span>View Report</span>
+                    </button>
+                    <button class="btn btn-primary">
+                        <span>➕</span>
+                        <span>Create Campaign</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Campaigns Grid -->
+            <div class="campaigns-grid" id="campaignsGrid">
+                <!-- Populated by JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        // Enhanced campaigns data
+        const enhancedCampaigns = [
+            {
+                id: "CAMP-001",
+                name: "Pregnancy Nurture Campaign",
+                icon: "🍼",
+                color: "#FF6B9D",
+                description: "AI-powered journey for expecting mothers from pregnancy detection to policy purchase",
+                status: "active",
+                leadsEnrolled: 347,
+                converted: 89,
+                conversionRate: 25.6,
+                active: 258,
+                avgConversionTime: 23,
+                revenue: 1200000,
+                touchpoints: 12,
+                duration: 90,
+                metrics: {
+                    avgResponseRate: 78,
+                    avgEngagementScore: 8.4,
+                    callsCompleted: 892,
+                    emailsSent: 2341
+                }
+            },
+            {
+                id: "CAMP-002",
+                name: "Birthday Celebration Campaign",
+                icon: "🎂",
+                color: "#FFB347",
+                description: "Personalized birthday outreach with special offers and coverage reviews",
+                status: "active",
+                leadsEnrolled: 1247,
+                converted: 156,
+                conversionRate: 12.5,
+                active: 892,
+                avgConversionTime: 14,
+                revenue: 580000,
+                touchpoints: 6,
+                duration: 30,
+                metrics: {
+                    avgResponseRate: 65,
+                    avgEngagementScore: 7.2,
+                    callsCompleted: 1823,
+                    emailsSent: 3741
+                }
+            },
+            {
+                id: "CAMP-003",
+                name: "Policy Anniversary Upsell",
+                icon: "🎁",
+                color: "#9B59B6",
+                description: "Strategic upsell campaign targeting policy anniversaries with personalized recommendations",
+                status: "active",
+                leadsEnrolled: 542,
+                converted: 167,
+                conversionRate: 30.8,
+                active: 289,
+                avgConversionTime: 18,
+                revenue: 2100000,
+                touchpoints: 8,
+                duration: 60,
+                metrics: {
+                    avgResponseRate: 82,
+                    avgEngagementScore: 8.9,
+                    callsCompleted: 1247,
+                    emailsSent: 2168
+                }
+            },
+            {
+                id: "CAMP-004",
+                name: "Property Purchase Protection",
+                icon: "🏠",
+                color: "#3498DB",
+                description: "Automated campaign for new property owners via PropertyGuru partnership",
+                status: "active",
+                leadsEnrolled: 423,
+                converted: 128,
+                conversionRate: 30.3,
+                active: 234,
+                avgConversionTime: 21,
+                revenue: 1850000,
+                touchpoints: 10,
+                duration: 45,
+                metrics: {
+                    avgResponseRate: 76,
+                    avgEngagementScore: 8.1,
+                    callsCompleted: 982,
+                    emailsSent: 1692
+                }
+            },
+            {
+                id: "CAMP-005",
+                name: "Young Professionals - Career Milestone",
+                icon: "💼",
+                color: "#1ABC9C",
+                description: "Targeted campaign for 25-35 year olds reaching career milestones",
+                status: "active",
+                leadsEnrolled: 678,
+                converted: 142,
+                conversionRate: 20.9,
+                active: 489,
+                avgConversionTime: 16,
+                revenue: 890000,
+                touchpoints: 7,
+                duration: 30,
+                metrics: {
+                    avgResponseRate: 71,
+                    avgEngagementScore: 7.8,
+                    callsCompleted: 1534,
+                    emailsSent: 2712
+                }
+            },
+            {
+                id: "CAMP-006",
+                name: "Entrepreneur Insurance Program",
+                icon: "🚀",
+                color: "#E74C3C",
+                description: "Specialized campaign for entrepreneurs leaving corporate jobs",
+                status: "active",
+                leadsEnrolled: 189,
+                converted: 67,
+                conversionRate: 35.4,
+                active: 98,
+                avgConversionTime: 19,
+                revenue: 720000,
+                touchpoints: 9,
+                duration: 35,
+                metrics: {
+                    avgResponseRate: 84,
+                    avgEngagementScore: 9.1,
+                    callsCompleted: 456,
+                    emailsSent: 756
+                }
+            }
+        ];
+
+        function renderCampaigns() {
+            const grid = document.getElementById('campaignsGrid');
+            grid.innerHTML = '';
+
+            enhancedCampaigns.forEach(campaign => {
+                const card = document.createElement('div');
+                card.className = 'campaign-card';
+
+                const progressPercent = ((campaign.converted / campaign.leadsEnrolled) * 100).toFixed(1);
+
+                card.innerHTML = `
+                    <div class="campaign-icon" style="background: linear-gradient(135deg, ${campaign.color}22, ${campaign.color}44);">
+                        ${campaign.icon}
+                    </div>
+
+                    <div class="campaign-header">
+                        <div style="flex: 1;">
+                            <h3 class="campaign-title">${campaign.name}</h3>
+                            <span class="badge badge-success">${campaign.status.toUpperCase()}</span>
+                        </div>
+                    </div>
+
+                    <p class="campaign-desc">${campaign.description}</p>
+
+                    <div class="campaign-stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Enrolled</div>
+                            <div class="stat-value">${campaign.leadsEnrolled.toLocaleString()}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Converted</div>
+                            <div class="stat-value" style="color: var(--success);">${campaign.converted}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Conv. Rate</div>
+                            <div class="stat-value" style="color: var(--ai-purple);">${campaign.conversionRate}%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Revenue</div>
+                            <div class="stat-value" style="color: var(--aia-red);">$${(campaign.revenue / 1000000).toFixed(1)}M</div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-progress">
+                        <div class="progress-label">
+                            <span>Campaign Progress</span>
+                            <span><strong>${progressPercent}%</strong></span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercent}%; background: ${campaign.color};"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <div class="metric-row">
+                            <span class="metric-label">Avg. Response Rate</span>
+                            <span class="metric-value">${campaign.metrics.avgResponseRate}%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Avg. Engagement</span>
+                            <span class="metric-value">${campaign.metrics.avgEngagementScore}/10</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">AI Calls Completed</span>
+                            <span class="metric-value">${campaign.metrics.callsCompleted.toLocaleString()}</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Avg. Conv. Time</span>
+                            <span class="metric-value">${campaign.avgConversionTime} days</span>
+                        </div>
+                    </div>
+
+                    <div class="campaign-actions">
+                        <button class="btn btn-primary flex-1" onclick="viewCampaign('${campaign.id}')">
+                            📊 View Details
+                        </button>
+                        <button class="btn btn-ghost" onclick="editCampaign('${campaign.id}')">
+                            ✏️ Edit
+                        </button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function viewCampaign(id) {
+            alert(`Campaign Details for ${id}\n\nThis would open a detailed view with:\n• Complete lead list\n• Journey visualization\n• Performance analytics\n• A/B test results\n• Conversion funnel`);
+        }
+
+        function editCampaign(id) {
+            alert(`Edit Campaign: ${id}\n\nThis would open the campaign editor with:\n• Touchpoint configuration\n• AI script customization\n• Trigger rules\n• Timing settings\n• Target audience`);
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            renderCampaigns();
+        });
+    </script>
+</body>
+</html>

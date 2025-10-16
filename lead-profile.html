@@ -1,0 +1,2504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarah Chen - Lead Profile - LeadPulseAI</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: var(--background);
+        }
+
+        .profile-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+        }
+
+        .profile-header {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-lg);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .profile-main {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: var(--space-xl);
+            align-items: start;
+        }
+
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-lg);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+        }
+
+        .profile-info h1 {
+            font-size: 32px;
+            margin-bottom: var(--space-sm);
+            color: var(--navy-blue);
+        }
+
+        .profile-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            font-size: 14px;
+            color: var(--medium);
+            margin-bottom: var(--space-md);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .tabs {
+            border-bottom: 2px solid var(--light);
+            margin-bottom: var(--space-lg);
+            overflow-x: auto;
+        }
+
+        .tab-list {
+            display: flex;
+            gap: var(--space-lg);
+            min-width: max-content;
+        }
+
+        .tab {
+            padding: var(--space-md) 0;
+            font-weight: 600;
+            color: var(--medium);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all var(--transition-fast);
+            margin-bottom: -2px;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: var(--navy-blue);
+        }
+
+        .tab.active {
+            color: var(--aia-red);
+            border-bottom-color: var(--aia-red);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .metric-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--medium);
+            margin-bottom: var(--space-md);
+            letter-spacing: 0.5px;
+        }
+
+        .metric-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--navy-blue);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: var(--space-xl);
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--light);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: var(--space-xl);
+            background: white;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 24px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--aia-red);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: var(--space-md);
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--navy-blue);
+            margin-bottom: 4px;
+        }
+
+        .timeline-meta {
+            font-size: 12px;
+            color: var(--medium);
+        }
+
+        .timeline-content {
+            font-size: 14px;
+            color: var(--navy-blue);
+            line-height: 1.6;
+        }
+
+        /* Enhanced Timeline Styles */
+        .timeline-event {
+            position: relative;
+            margin-bottom: var(--space-xl);
+            background: white;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid #4facfe;
+            transition: all var(--transition-fast);
+        }
+
+        .timeline-event:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(4px);
+        }
+
+        .timeline-event::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 24px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid #4facfe;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-event.milestone { border-left-color: #4facfe; }
+        .timeline-event.milestone::before { border-color: #4facfe; }
+
+        .timeline-event.trigger { border-left-color: #FF6B6B; }
+        .timeline-event.trigger::before { border-color: #FF6B6B; }
+
+        .timeline-event.communication { border-left-color: #9333EA; }
+        .timeline-event.communication::before { border-color: #9333EA; }
+
+        .timeline-event.engagement { border-left-color: #00C853; }
+        .timeline-event.engagement::before { border-color: #00C853; }
+
+        .timeline-event.system_action { border-left-color: #9E9E9E; }
+        .timeline-event.system_action::before { border-color: #9E9E9E; }
+
+        .timeline-event.intelligence { border-left-color: #00C853; }
+        .timeline-event.intelligence::before { border-color: #00C853; }
+
+        .timeline-event.risk { border-left-color: #FFA500; }
+        .timeline-event.risk::before { border-color: #FFA500; }
+
+        .timeline-event-icon {
+            font-size: 24px;
+            margin-right: var(--space-sm);
+        }
+
+        .timeline-event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: var(--space-sm);
+        }
+
+        .timeline-event-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy-blue);
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-event-time {
+            font-size: 12px;
+            color: var(--medium);
+        }
+
+        .timeline-event-description {
+            font-size: 14px;
+            color: var(--navy-blue);
+            margin-bottom: var(--space-md);
+            line-height: 1.6;
+        }
+
+        .timeline-event-details {
+            background: var(--background);
+            border-radius: var(--radius-sm);
+            padding: var(--space-md);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .timeline-event-detail-row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-detail-label {
+            font-weight: 600;
+            color: var(--medium);
+        }
+
+        .timeline-event-detail-value {
+            color: var(--navy-blue);
+        }
+
+        .timeline-event-impact {
+            background: linear-gradient(135deg, rgba(0, 200, 83, 0.1), rgba(0, 200, 83, 0.05));
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            margin-top: var(--space-md);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .timeline-event-status-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--danger);
+            color: white;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-day-separator {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy-blue);
+            margin: var(--space-xl) 0 var(--space-md) 0;
+            padding-bottom: var(--space-sm);
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .timeline-day-badge {
+            background: var(--aia-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Sentiment Chart Styles */
+        .sentiment-chart-container {
+            padding: var(--space-lg);
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sentiment-chart {
+            position: relative;
+            height: 300px;
+            margin-top: var(--space-lg);
+        }
+
+        .chart-y-axis {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 40px;
+            width: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--medium);
+        }
+
+        .chart-area {
+            position: absolute;
+            left: 50px;
+            right: 0;
+            top: 0;
+            bottom: 40px;
+            border-left: 2px solid var(--light);
+            border-bottom: 2px solid var(--light);
+        }
+
+        .chart-grid-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--light);
+        }
+
+        .chart-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .chart-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--ai-purple);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            z-index: 10;
+        }
+
+        .chart-point:hover {
+            transform: scale(1.5);
+            border-width: 4px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .chart-point.positive {
+            border-color: var(--success);
+        }
+
+        .chart-point.neutral {
+            border-color: var(--warning);
+        }
+
+        .chart-point.negative {
+            border-color: var(--danger);
+        }
+
+        .chart-point-label {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--medium);
+            white-space: nowrap;
+        }
+
+        .chart-point-tooltip {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy-blue);
+            color: white;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-fast);
+            z-index: 100;
+        }
+
+        .chart-point:hover .chart-point-tooltip {
+            opacity: 1;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--light);
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Lifecycle Stage Progression */
+        .lifecycle-progression {
+            margin-bottom: var(--space-xl);
+        }
+
+        .lifecycle-stages {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: var(--space-lg);
+            position: relative;
+        }
+
+        .lifecycle-connector {
+            position: absolute;
+            top: 20px;
+            left: 60px;
+            right: 60px;
+            height: 4px;
+            background: var(--light);
+            z-index: 1;
+        }
+
+        .lifecycle-connector-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--ai-purple), var(--success));
+            transition: width 1s ease-in-out;
+        }
+
+        .lifecycle-stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .lifecycle-stage-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all var(--transition-fast);
+        }
+
+        .lifecycle-stage.completed .lifecycle-stage-icon {
+            background: linear-gradient(135deg, var(--ai-purple), #764ba2);
+            border-color: var(--ai-purple);
+            color: white;
+        }
+
+        .lifecycle-stage.current .lifecycle-stage-icon {
+            background: linear-gradient(135deg, var(--success), #00C853);
+            border-color: var(--success);
+            color: white;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 20px rgba(0, 200, 83, 0.4);
+        }
+
+        .lifecycle-stage-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--medium);
+            text-align: center;
+        }
+
+        .lifecycle-stage.completed .lifecycle-stage-label {
+            color: var(--ai-purple);
+        }
+
+        .lifecycle-stage.current .lifecycle-stage-label {
+            color: var(--success);
+            font-size: 12px;
+        }
+
+        .lifecycle-stage-date {
+            font-size: 10px;
+            color: var(--medium);
+            text-align: center;
+        }
+
+        .conversation-transcript {
+            background: var(--background);
+            border-radius: var(--radius-sm);
+            padding: var(--space-md);
+            margin: var(--space-md) 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Modal Dialog Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+        }
+
+        .modal-dialog {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: var(--space-lg) var(--space-xl);
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .modal-body {
+            padding: var(--space-xl);
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--medium);
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            background: var(--light);
+            color: var(--navy-blue);
+        }
+
+        .modal-tabs {
+            display: flex;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+            border-bottom: 2px solid var(--light);
+        }
+
+        .modal-tab {
+            padding: var(--space-sm) var(--space-lg);
+            cursor: pointer;
+            color: var(--medium);
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all var(--transition-fast);
+            margin-bottom: -2px;
+        }
+
+        .modal-tab:hover {
+            color: var(--navy-blue);
+            background: var(--background);
+        }
+
+        .modal-tab.active {
+            color: var(--ai-purple);
+            border-bottom-color: var(--ai-purple);
+        }
+
+        .modal-tab-content {
+            display: none;
+        }
+
+        .modal-tab-content.active {
+            display: block;
+        }
+
+        .key-insight-box {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(147, 51, 234, 0.05));
+            border-left: 4px solid var(--ai-purple);
+            padding: var(--space-lg);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .customer-quote {
+            background: linear-gradient(135deg, rgba(228, 5, 33, 0.1), rgba(228, 5, 33, 0.05));
+            border-left: 4px solid var(--aia-red);
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-md);
+            font-style: italic;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: start;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            background: var(--background);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        .action-priority {
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .action-priority.high {
+            background: var(--danger);
+            color: white;
+        }
+
+        .action-priority.medium {
+            background: var(--warning);
+            color: white;
+        }
+
+        .action-priority.low {
+            background: var(--light);
+            color: var(--medium);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .transcript-line {
+            margin-bottom: var(--space-sm);
+            padding: var(--space-sm);
+            border-radius: 4px;
+        }
+
+        .transcript-line.ai {
+            background: rgba(147, 51, 234, 0.05);
+            border-left: 2px solid var(--ai-purple);
+            padding-left: var(--space-md);
+        }
+
+        .transcript-line.lead {
+            background: rgba(0, 102, 204, 0.05);
+            border-left: 2px solid var(--sky-blue);
+            padding-left: var(--space-md);
+        }
+
+        .transcript-speaker {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .transcript-speaker.ai { color: var(--ai-purple); }
+        .transcript-speaker.lead { color: var(--sky-blue); }
+
+        .transcript-text {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--space-lg);
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy-blue);
+            margin-bottom: var(--space-lg);
+        }
+
+        @media (max-width: 768px) {
+            .profile-main {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .profile-actions {
+                justify-content: center;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <!-- Header -->
+        <div class="profile-header">
+            <div class="header-top">
+                <div class="flex items-center gap-md">
+                    <a href="dashboard.html" class="back-link">
+                        ← Back to Dashboard
+                    </a>
+                    <div style="height: 20px; width: 1px; background: var(--light);"></div>
+                    <a href="dashboard.html" class="logo">
+                        <span class="logo-icon">🎯</span>
+                        <span>LeadPulseAI</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-md">
+                    <span class="badge badge-hot">🔥 HOT LEAD</span>
+                    <span class="badge badge-success">Qualified</span>
+                </div>
+            </div>
+
+            <div class="profile-main">
+                <div class="profile-avatar-large">SC</div>
+
+                <div class="profile-info">
+                    <h1>Sarah Chen</h1>
+                    <div class="profile-meta">
+                        <span>✉️ sarah.chen@email.com</span>
+                        <span>📞 +65 9123 4567</span>
+                        <span>👤 Age: 32, Married</span>
+                        <span>📍 Singapore, District 10</span>
+                        <span>🆔 ID: LC-2025-8472</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary" onclick="location.href='calling.html'">
+                            📞 Call Now
+                        </button>
+                        <button class="btn btn-secondary" onclick="sendEmail()">
+                            ✉️ Send Email
+                        </button>
+                        <button class="btn btn-secondary" onclick="sendSMS()">
+                            💬 Send SMS
+                        </button>
+                        <button class="btn btn-success" onclick="bookAppointment()">
+                            📅 Book Appointment
+                        </button>
+                    </div>
+                </div>
+
+                <div style="text-align: center; padding: var(--space-lg); background: linear-gradient(135deg, rgba(0, 200, 83, 0.1) 0%, rgba(0, 200, 83, 0.05) 100%); border-radius: var(--radius-md);">
+                    <div style="font-size: 12px; color: var(--medium); margin-bottom: 4px;">LIFETIME VALUE</div>
+                    <div style="font-size: 48px; font-weight: 700; color: var(--success); font-family: var(--font-mono);">$95K</div>
+                    <div style="font-size: 11px; color: var(--success); margin-top: 4px;">✅ Loyal Customer | NPS 9/10</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab-list">
+                <div class="tab active" onclick="switchTab('overview')">📊 Overview</div>
+                <div class="tab" onclick="switchTab('conversations')">💬 Conversation History</div>
+                <div class="tab" onclick="switchTab('recordings')">🎧 Call Recordings</div>
+                <div class="tab" onclick="switchTab('timeline')">⏱️ Timeline</div>
+                <div class="tab" onclick="switchTab('insights')">🧠 AI Insights</div>
+                <div class="tab" onclick="switchTab('documents')">📄 Documents</div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Overview -->
+        <div class="tab-content active" id="overview">
+            <div class="metrics-grid">
+                <!-- Lead Metrics -->
+                <div class="metric-card">
+                    <div class="metric-title">📊 Lead Metrics</div>
+                    <div class="metric-content" id="leadMetricsContent">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Trigger Events -->
+                <div class="metric-card">
+                    <div class="metric-title">🎯 Trigger Events & Life Moments</div>
+                    <div class="metric-content" id="triggerEventsContent">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Active Campaigns -->
+                <div class="metric-card" id="activeCampaignsCard">
+                    <div class="metric-title">🎯 Active Campaigns</div>
+                    <div class="metric-content" id="activeCampaignsContent">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Current Coverage & Gaps -->
+                <div class="metric-card">
+                    <div class="metric-title">📋 Current Coverage & Gaps</div>
+                    <div class="metric-content" id="coverageContent">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- AI Recommended Products -->
+                <div class="metric-card">
+                    <div class="metric-title">💡 AI Recommended Products</div>
+                    <div class="metric-content" id="recommendedProductsContent" style="font-size: 13px;">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Behavioral Insights -->
+                <div class="metric-card">
+                    <div class="metric-title">🧠 AI Behavioral Insights</div>
+                    <div class="metric-content" id="behavioralInsightsContent" style="font-size: 13px; line-height: 1.8;">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- AI Strategy -->
+                <div class="metric-card">
+                    <div class="metric-title">🎯 Recommended Approach</div>
+                    <div class="metric-content" id="aiStrategyContent" style="font-size: 13px; line-height: 1.8;">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Conversation History -->
+        <div class="tab-content" id="conversations">
+            <div class="timeline" id="conversationTimeline">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Tab Content: Call Recordings -->
+        <div class="tab-content" id="recordings">
+            <div style="margin-bottom: var(--space-lg);">
+                <h3 style="color: var(--navy-blue); margin-bottom: var(--space-sm);">🎧 Call Recordings Library</h3>
+                <p style="color: var(--medium); font-size: 14px;">9 recordings available | Total: 2 hours 15 minutes</p>
+            </div>
+
+            <div id="recordingsList">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Call Recording Modal -->
+        <div id="recordingModal" class="modal-overlay" onclick="closeModalOnOutsideClick(event)">
+            <div class="modal-dialog" onclick="event.stopPropagation()">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div>
+                        <h3 id="modalTitle" style="color: var(--navy-blue); margin-bottom: var(--space-sm);">🎧 Call Recording</h3>
+                        <p id="modalMeta" style="color: var(--medium); font-size: 14px;">Date | Duration | Agent</p>
+                    </div>
+                    <button class="modal-close" onclick="closeRecordingModal()">✕</button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Audio Player -->
+                    <div style="background: var(--background); padding: var(--space-lg); border-radius: var(--radius-md); margin-bottom: var(--space-xl);">
+                        <div style="height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-md);">
+                            <div style="font-size: 48px;">🎵</div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-md); margin-bottom: var(--space-md);">
+                            <button class="btn btn-primary" onclick="playRecording()">▶️ Play Recording</button>
+                            <button class="btn btn-secondary" onclick="downloadRecording()">📥 Download</button>
+                        </div>
+                        <div style="font-size: 12px; color: var(--medium); text-align: center;" id="modalPlayerTime">
+                            00:00 / 12:00
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="modal-tabs">
+                        <div class="modal-tab active" onclick="switchModalTab('summary')">📋 Summary</div>
+                        <div class="modal-tab" onclick="switchModalTab('insights')">💡 Key Insights</div>
+                        <div class="modal-tab" onclick="switchModalTab('transcript')">📝 Full Transcript</div>
+                        <div class="modal-tab" onclick="switchModalTab('analysis')">🧠 AI Analysis</div>
+                    </div>
+
+                    <!-- Tab Content: Summary -->
+                    <div id="modalTabSummary" class="modal-tab-content active">
+                        <div id="modalSummaryContent">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Key Insights -->
+                    <div id="modalTabInsights" class="modal-tab-content">
+                        <div id="modalInsightsContent">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Transcript -->
+                    <div id="modalTabTranscript" class="modal-tab-content">
+                        <div id="modalTranscriptContent">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: AI Analysis -->
+                    <div id="modalTabAnalysis" class="modal-tab-content">
+                        <div id="modalAnalysisContent">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Timeline -->
+        <div class="tab-content" id="timeline">
+            <!-- Lifecycle Stage Progression -->
+            <div class="sentiment-chart-container lifecycle-progression">
+                <div class="chart-title">🎯 Lifecycle Stage Progression</div>
+                <div class="lifecycle-stages">
+                    <div class="lifecycle-connector">
+                        <div class="lifecycle-connector-progress" style="width: 100%;"></div>
+                    </div>
+
+                    <div class="lifecycle-stage completed">
+                        <div class="lifecycle-stage-icon">✅</div>
+                        <div class="lifecycle-stage-label">New Lead</div>
+                        <div class="lifecycle-stage-date">Oct 1, 2025</div>
+                    </div>
+
+                    <div class="lifecycle-stage completed">
+                        <div class="lifecycle-stage-icon">📞</div>
+                        <div class="lifecycle-stage-label">Contacted</div>
+                        <div class="lifecycle-stage-date">Oct 2, 2025</div>
+                    </div>
+
+                    <div class="lifecycle-stage completed">
+                        <div class="lifecycle-stage-icon">🎯</div>
+                        <div class="lifecycle-stage-label">Qualified</div>
+                        <div class="lifecycle-stage-date">Oct 12, 2025</div>
+                    </div>
+
+                    <div class="lifecycle-stage completed">
+                        <div class="lifecycle-stage-icon">🎉</div>
+                        <div class="lifecycle-stage-label">Customer</div>
+                        <div class="lifecycle-stage-date">Oct 23, 2025</div>
+                    </div>
+
+                    <div class="lifecycle-stage current">
+                        <div class="lifecycle-stage-icon">🏆</div>
+                        <div class="lifecycle-stage-label">Loyal Customer</div>
+                        <div class="lifecycle-stage-date">Mar 15, 2026</div>
+                    </div>
+                </div>
+                <div style="margin-top: var(--space-lg); padding: var(--space-md); background: rgba(0, 200, 83, 0.1); border-radius: var(--radius-sm); text-align: center;">
+                    <strong>Customer Journey: 165 days</strong> |
+                    <span style="color: var(--success);">✅ 2 Policies Active</span> |
+                    <span style="color: var(--ai-purple);">📈 $95K Lifetime Value</span> |
+                    <span style="color: var(--warning);">🌟 1 Referral Made</span> |
+                    <span style="color: var(--success);">😊 NPS 9/10 (Promoter)</span>
+                </div>
+            </div>
+
+            <!-- Sentiment Chart -->
+            <div class="sentiment-chart-container">
+                <div class="chart-title">📈 Sentiment Journey (Last 8 Touchpoints)</div>
+                <div class="sentiment-chart" id="sentimentChart">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Complete Timeline -->
+            <div class="timeline" id="fullTimeline">
+                <!-- All events in chronological order -->
+            </div>
+        </div>
+
+        <!-- Tab Content: AI Insights -->
+        <div class="tab-content" id="insights">
+            <div class="metrics-grid">
+                <div class="chart-container">
+                    <div class="chart-title">📊 Conversion Probability Evolution</div>
+                    <div style="font-size: 14px; color: var(--medium); margin-bottom: var(--space-lg);">
+                        Initial (Day 0): <strong>32%</strong> (baseline)<br>
+                        After Call #1: <strong>45%</strong> (+13% - positive first impression)<br>
+                        After Email open: <strong>48%</strong> (+3% - engaged with content)<br>
+                        After Call #2: <strong>55%</strong> (+7% - addressing concerns)<br>
+                        After SMS reply: <strong>62%</strong> (+7% - voluntary engagement)<br>
+                        After Email clicks: <strong>68%</strong> (+6% - researching actively)<br>
+                        Current (Call #3): <strong class="text-success">75%</strong> (+7% - competitor comparison phase)
+                    </div>
+                    <div style="background: var(--background); padding: var(--space-lg); border-radius: var(--radius-md);">
+                        <div style="font-weight: 600; margin-bottom: 8px;">🎯 Predictions:</div>
+                        <div style="font-size: 14px; line-height: 1.8;">
+                            • 85% probability if specialist call happens<br>
+                            • Estimated Close Date: Oct 24-26, 2025 (9-11 days)<br>
+                            • Recommended Action: Book Rachel Tan within 48 hours
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">🔤 Keyword Frequency & Sentiment</div>
+                    <div style="font-size: 14px; line-height: 2;">
+                        <div><span class="badge badge-success">Positive Keywords:</span></div>
+                        <div style="margin-left: 16px; font-size: 13px;">
+                            ✅ "helpful" (4x) - Sentiment: +0.85<br>
+                            ✅ "thank you" (6x) - Sentiment: +0.92<br>
+                            ✅ "excited" (2x) - Sentiment: +0.95<br>
+                            ✅ "appreciate" (3x) - Sentiment: +0.88
+                        </div>
+
+                        <div style="margin-top: var(--space-md);"><span class="badge badge-warning">Concern Keywords:</span></div>
+                        <div style="margin-left: 16px; font-size: 13px;">
+                            ⚠️ "overwhelmed" (2x) - AI adapted approach<br>
+                            ⚠️ "not sure" (2x) - Uncertainty pattern<br>
+                            ⚠️ "need time" (2x) - Delay pattern
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="padding: var(--space-xl); margin-top: var(--space-lg);">
+                <h3 style="margin-bottom: var(--space-md);">📋 Recommended Next Actions</h3>
+                <div style="font-size: 14px; line-height: 2;">
+                    <div class="flex items-center gap-md" style="margin-bottom: var(--space-sm);">
+                        <span class="badge badge-danger">HIGH PRIORITY</span>
+                        <strong>Book specialist call within next 48 hours</strong>
+                    </div>
+                    <div style="margin-left: 32px; color: var(--medium); font-size: 13px;">
+                        Rationale: Sarah is in "comparison research" phase - prime moment for expert consultation
+                    </div>
+
+                    <div style="margin-top: var(--space-md);">
+                        <strong>2. Send competitor comparison analysis tonight</strong><br>
+                        <span style="color: var(--medium); font-size: 13px; margin-left: 16px;">Strike while Sarah is actively researching</span>
+                    </div>
+
+                    <div style="margin-top: var(--space-md);">
+                        <strong>3. Activate limited-time offer (New Parent Bundle)</strong><br>
+                        <span style="color: var(--medium); font-size: 13px; margin-left: 16px;">Create urgency to accelerate decision</span>
+                    </div>
+
+                    <div style="margin-top: var(--space-md);">
+                        <strong>4. Brief Rachel Tan with full context</strong><br>
+                        <span style="color: var(--medium); font-size: 13px; margin-left: 16px;">Handoff is imminent - agent needs complete picture</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Documents -->
+        <div class="tab-content" id="documents">
+            <div class="card" style="padding: var(--space-xl);">
+                <h3 style="margin-bottom: var(--space-lg);">📄 Documents & Attachments</h3>
+                <div style="display: grid; gap: var(--space-md);">
+                    <div class="flex items-center justify-between" style="padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                        <div>
+                            <div style="font-weight: 600;">📊 Coverage Analysis Report</div>
+                            <div style="font-size: 12px; color: var(--medium);">Sent: Oct 1, 2025 | Opened 3x</div>
+                        </div>
+                        <button class="btn btn-sm btn-secondary">📥 Download</button>
+                    </div>
+                    <div class="flex items-center justify-between" style="padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                        <div>
+                            <div style="font-weight: 600;">📋 Pregnancy Insurance Checklist</div>
+                            <div style="font-size: 12px; color: var(--medium);">Sent: Oct 5, 2025 | Clicked 2 links</div>
+                        </div>
+                        <button class="btn btn-sm btn-secondary">📥 Download</button>
+                    </div>
+                    <div class="flex items-center justify-between" style="padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                        <div>
+                            <div style="font-weight: 600;">💰 Prudential Quote (Uploaded by Sarah)</div>
+                            <div style="font-size: 12px; color: var(--medium);">Received: Oct 14, 2025</div>
+                        </div>
+                        <button class="btn btn-sm btn-secondary">👁️ View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        // Switch tabs
+        function switchTab(tabName) {
+            // Update tab styling
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+
+            // Load specific content
+            if (tabName === 'conversations') {
+                loadConversationHistory();
+            } else if (tabName === 'recordings') {
+                loadCallRecordings();
+            } else if (tabName === 'timeline') {
+                loadTimeline();
+                drawSentimentChart();
+            }
+        }
+
+        // Load conversation history
+        function loadConversationHistory() {
+            const container = document.getElementById('conversationTimeline');
+            if (container.children.length > 0) return; // Already loaded
+
+            // Reverse order to show most recent first
+            const touchpoints = [...currentLead.touchpoints].reverse();
+
+            touchpoints.forEach((tp, index) => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                item.style.animationDelay = `${index * 0.1}s`;
+
+                let badge = 'badge-info';
+                let icon = '📞';
+
+                if (tp.type === 'voice_call') {
+                    badge = tp.status === 'in_progress' ? 'badge-danger' : 'badge-info';
+                    icon = tp.status === 'in_progress' ? '🔴' : '📞';
+                } else if (tp.type === 'sms') {
+                    badge = 'badge-warning';
+                    icon = '💬';
+                } else if (tp.type === 'email') {
+                    badge = 'badge-info';
+                    icon = '✉️';
+                }
+
+                const date = new Date(tp.timestamp);
+                const formattedDate = date.toLocaleDateString('en-SG', { month: 'short', day: 'numeric', year: 'numeric' });
+                const formattedTime = date.toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' });
+
+                let content = `
+                    <div class="timeline-header">
+                        <div>
+                            <div class="timeline-title">
+                                ${icon} ${tp.type.toUpperCase().replace('_', ' ')} #${tp.number}
+                                ${tp.status === 'in_progress' ? '<span class="badge badge-danger">ONGOING</span>' : ''}
+                            </div>
+                            <div class="timeline-meta">
+                                ${formattedDate} at ${formattedTime} |
+                                Agent: ${tp.agent.name} ${tp.agent.type === 'ai' ? '(AI)' : ''} |
+                                Sentiment: ${tp.sentimentLabel} (${tp.sentiment}/10)
+                            </div>
+                        </div>
+                        <span class="badge ${badge}">${tp.campaign}</span>
+                    </div>
+                    <div class="timeline-content">
+                        ${tp.summary}
+                `;
+
+                // Add transcript for calls
+                if (tp.type === 'voice_call' && tp.transcript) {
+                    content += `
+                        <div class="conversation-transcript">
+                            ${tp.transcript.slice(0, 5).map(line => `
+                                <div class="transcript-line ${line.speaker}">
+                                    <div class="transcript-speaker ${line.speaker}">[${line.timestamp}] ${line.name}:</div>
+                                    <div class="transcript-text">${line.text}</div>
+                                </div>
+                            `).join('')}
+                            ${tp.transcript.length > 5 ? '<div style="text-align: center; margin-top: var(--space-sm);"><button class="btn btn-sm btn-ghost" onclick="location.href=\'calling.html\'">View Full Transcript</button></div>' : ''}
+                        </div>
+                    `;
+                }
+
+                // Add SMS messages
+                if (tp.type === 'sms' && tp.messages) {
+                    content += `
+                        <div style="background: var(--background); padding: var(--space-md); border-radius: var(--radius-sm); margin-top: var(--space-md); font-size: 13px;">
+                            ${tp.messages.map(msg => `
+                                <div style="margin-bottom: var(--space-sm);">
+                                    <strong>[${msg.time}] ${msg.from === 'ai' ? 'Emma (AI)' : 'Sarah'}:</strong><br>
+                                    ${msg.text}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                content += '</div>';
+                item.innerHTML = content;
+                container.appendChild(item);
+            });
+        }
+
+        // Load recording transcript
+        function loadRecordingTranscript() {
+            const container = document.getElementById('recordingTranscript');
+            if (container.children.length > 0) return;
+
+            const transcript = currentLead.touchpoints[0].transcript;
+            transcript.forEach(line => {
+                const div = document.createElement('div');
+                div.className = `transcript-line ${line.speaker}`;
+                div.innerHTML = `
+                    <div class="transcript-speaker ${line.speaker}">[${line.timestamp}] ${line.name}:</div>
+                    <div class="transcript-text">${line.text}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Load comprehensive timeline
+        function loadTimeline() {
+            const container = document.getElementById('fullTimeline');
+            if (container.children.length > 0) return; // Already loaded
+
+            // Check if lead has timeline events
+            if (!currentLead.timelineEvents || currentLead.timelineEvents.length === 0) {
+                container.innerHTML = '<div style="padding: var(--space-xl); text-align: center; color: var(--medium);">No timeline events available yet. Timeline events will appear as the lead progresses through the nurture journey.</div>';
+                return;
+            }
+
+            // Group events by date
+            const eventsByDate = {};
+            currentLead.timelineEvents.forEach(event => {
+                const date = new Date(event.timestamp);
+                const dateKey = date.toLocaleDateString('en-SG', { month: 'short', day: 'numeric', year: 'numeric' });
+                if (!eventsByDate[dateKey]) {
+                    eventsByDate[dateKey] = [];
+                }
+                eventsByDate[dateKey].push(event);
+            });
+
+            // Render events grouped by day
+            Object.keys(eventsByDate).forEach(dateKey => {
+                const events = eventsByDate[dateKey];
+
+                // Day separator
+                const separator = document.createElement('div');
+                separator.className = 'timeline-day-separator';
+                separator.innerHTML = `
+                    <span>📅 ${dateKey}</span>
+                    <span class="timeline-day-badge">${events.length} events</span>
+                `;
+                container.appendChild(separator);
+
+                // Render each event
+                events.forEach(event => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.className = `timeline-event ${event.category}`;
+
+                    const time = new Date(event.timestamp).toLocaleTimeString('en-SG', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    let detailsHTML = '';
+                    if (event.details) {
+                        detailsHTML = '<div class="timeline-event-details">';
+
+                        // Handle different detail structures
+                        if (typeof event.details === 'object') {
+                            Object.keys(event.details).forEach(key => {
+                                const label = key.replace(/([A-Z])/g, ' $1')
+                                    .replace(/^./, str => str.toUpperCase());
+                                detailsHTML += `
+                                    <div class="timeline-event-detail-row">
+                                        <div class="timeline-event-detail-label">${label}:</div>
+                                        <div class="timeline-event-detail-value">${event.details[key]}</div>
+                                    </div>
+                                `;
+                            });
+                        }
+
+                        // Add coverage gaps if present
+                        if (event.gaps && event.gaps.length > 0) {
+                            detailsHTML += '<div style="margin-top: 12px;"><strong>Coverage Gaps:</strong><br>';
+                            event.gaps.forEach(gap => {
+                                detailsHTML += `<div style="margin-left: 12px; margin-top: 4px;">${gap}</div>`;
+                            });
+                            detailsHTML += '</div>';
+                        }
+
+                        detailsHTML += '</div>';
+                    }
+
+                    let impactHTML = '';
+                    if (event.impact) {
+                        impactHTML = `<div class="timeline-event-impact">📊 Impact: ${event.impact}</div>`;
+                    }
+
+                    let statusBadge = '';
+                    if (event.status === 'LIVE') {
+                        statusBadge = '<span class="timeline-event-status-live">🔴 LIVE</span>';
+                    }
+
+                    eventDiv.innerHTML = `
+                        <div class="timeline-event-header">
+                            <div class="timeline-event-title">
+                                <span class="timeline-event-icon">${event.icon}</span>
+                                <span>${event.title}</span>
+                                ${statusBadge}
+                            </div>
+                            <div class="timeline-event-time">${time}</div>
+                        </div>
+                        <div class="timeline-event-description">${event.description}</div>
+                        ${detailsHTML}
+                        ${impactHTML}
+                    `;
+
+                    container.appendChild(eventDiv);
+                });
+            });
+        }
+
+        // Draw sentiment chart
+        function drawSentimentChart() {
+            const chartContainer = document.getElementById('sentimentChart');
+            if (chartContainer.children.length > 0) return; // Already drawn
+
+            // Get last 8 touchpoints with sentiment data
+            const touchpoints = currentLead.touchpoints
+                .filter(tp => tp.sentiment !== undefined)
+                .reverse()
+                .slice(0, 8)
+                .reverse();
+
+            if (touchpoints.length === 0) return;
+
+            // Create chart structure
+            chartContainer.innerHTML = `
+                <div class="chart-y-axis">
+                    <div>10</div>
+                    <div>8</div>
+                    <div>6</div>
+                    <div>4</div>
+                    <div>2</div>
+                    <div>0</div>
+                </div>
+                <div class="chart-area" id="chartArea">
+                    <div class="chart-grid-line" style="top: 0%;"></div>
+                    <div class="chart-grid-line" style="top: 20%;"></div>
+                    <div class="chart-grid-line" style="top: 40%;"></div>
+                    <div class="chart-grid-line" style="top: 60%;"></div>
+                    <div class="chart-grid-line" style="top: 80%;"></div>
+                    <svg class="chart-line" style="position: absolute; width: 100%; height: 100%; pointer-events: none;">
+                        <polyline id="sentimentLine" fill="none" stroke="#9333EA" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--success); border: 2px solid var(--success);"></div>
+                        <span>Positive (7-10)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--warning); border: 2px solid var(--warning);"></div>
+                        <span>Neutral (5-7)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--danger); border: 2px solid var(--danger);"></div>
+                        <span>Negative (0-5)</span>
+                    </div>
+                    <div class="legend-item" style="margin-left: auto;">
+                        <strong>Trend:</strong>
+                        <span style="color: var(--success);">📈 Improving (${touchpoints[0].sentiment.toFixed(1)} → ${touchpoints[touchpoints.length - 1].sentiment.toFixed(1)})</span>
+                    </div>
+                </div>
+            `;
+
+            const chartArea = document.getElementById('chartArea');
+            const chartWidth = chartArea.offsetWidth;
+            const chartHeight = chartArea.offsetHeight;
+
+            // Calculate positions
+            const points = touchpoints.map((tp, index) => {
+                const x = (index / (touchpoints.length - 1)) * chartWidth;
+                const y = chartHeight - ((tp.sentiment / 10) * chartHeight);
+                return { x, y, tp };
+            });
+
+            // Draw connecting line
+            const polyline = document.getElementById('sentimentLine');
+            const pointsString = points.map(p => `${p.x},${p.y}`).join(' ');
+            polyline.setAttribute('points', pointsString);
+
+            // Add data points
+            points.forEach((point, index) => {
+                const tp = point.tp;
+                const date = new Date(tp.timestamp);
+                const label = date.toLocaleDateString('en-SG', { month: 'short', day: 'numeric' });
+
+                // Determine sentiment class
+                let sentimentClass = 'neutral';
+                if (tp.sentiment >= 7) sentimentClass = 'positive';
+                else if (tp.sentiment < 5) sentimentClass = 'negative';
+
+                const pointDiv = document.createElement('div');
+                pointDiv.className = `chart-point ${sentimentClass}`;
+                pointDiv.style.left = `${point.x}px`;
+                pointDiv.style.top = `${point.y}px`;
+                pointDiv.style.transform = 'translate(-50%, -50%)';
+
+                // Get touchpoint type icon
+                let typeIcon = '📞';
+                let typeName = 'Call';
+                if (tp.type === 'voice_call') {
+                    typeIcon = '📞';
+                    typeName = 'Call';
+                } else if (tp.type === 'sms') {
+                    typeIcon = '💬';
+                    typeName = 'SMS';
+                } else if (tp.type === 'email') {
+                    typeIcon = '📧';
+                    typeName = 'Email';
+                }
+
+                pointDiv.innerHTML = `
+                    <div class="chart-point-label">${label}</div>
+                    <div class="chart-point-tooltip">
+                        ${typeIcon} ${typeName} #${tp.number}<br>
+                        Sentiment: ${tp.sentiment.toFixed(1)}/10 (${tp.sentimentLabel})<br>
+                        ${date.toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                `;
+
+                chartArea.appendChild(pointDiv);
+            });
+        }
+
+        // Load all call recordings
+        function loadCallRecordings() {
+            const recordingsList = document.getElementById('recordingsList');
+            if (recordingsList.children.length > 0) return; // Already loaded
+
+            // Get all voice calls and specialist meetings with transcripts
+            const callRecordings = currentLead.touchpoints.filter(tp =>
+                (tp.type === 'voice_call' || tp.type === 'specialist_meeting') &&
+                (tp.transcript || tp.meetingNotes)
+            );
+
+            callRecordings.forEach((recording, index) => {
+                const date = new Date(recording.timestamp);
+                const dateStr = date.toLocaleDateString('en-SG', { month: 'short', day: 'numeric', year: 'numeric' });
+                const timeStr = date.toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' });
+                const duration = formatDuration(recording.duration);
+
+                const isHuman = recording.agent.type === 'human';
+                const agentName = recording.agent.name;
+                const icon = isHuman ? '👤' : '📞';
+                const typeLabel = isHuman ? 'Specialist Meeting' : 'AI Call';
+                const sentimentColor = recording.sentiment >= 8 ? 'var(--success)' : recording.sentiment >= 6 ? 'var(--warning)' : 'var(--danger)';
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.marginBottom = 'var(--space-md)';
+                card.style.cursor = 'pointer';
+                card.style.transition = 'all var(--transition-fast)';
+                card.onmouseover = () => card.style.boxShadow = 'var(--shadow-md)';
+                card.onmouseout = () => card.style.boxShadow = 'var(--shadow-sm)';
+                card.onclick = () => playCallRecording(recording);
+
+                card.innerHTML = `
+                    <div style="padding: var(--space-lg);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-sm);">
+                            <div>
+                                <div style="font-size: 18px; font-weight: 600; color: var(--navy-blue); margin-bottom: 4px;">
+                                    ${icon} ${typeLabel} #${recording.number}
+                                </div>
+                                <div style="font-size: 13px; color: var(--medium);">
+                                    ${dateStr} at ${timeStr} | ${agentName}
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 14px; font-weight: 600; color: var(--navy-blue);">${duration}</div>
+                                <div style="font-size: 12px; color: ${sentimentColor};">
+                                    ${recording.sentiment ? recording.sentiment.toFixed(1) + '/10 ' + recording.sentimentLabel : 'N/A'}
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size: 14px; color: var(--navy-blue); margin-bottom: var(--space-sm);">
+                            ${recording.summary}
+                        </div>
+                        <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
+                            <span class="badge badge-${isHuman ? 'warning' : 'primary'}">${typeLabel}</span>
+                            <span class="badge badge-secondary">${recording.campaign}</span>
+                            ${recording.outcome ? `<span class="badge badge-success">${recording.outcome.replace(/_/g, ' ')}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+
+                recordingsList.appendChild(card);
+            });
+        }
+
+        // Open call recording modal
+        function playCallRecording(recording) {
+            const modal = document.getElementById('recordingModal');
+            const title = document.getElementById('modalTitle');
+            const meta = document.getElementById('modalMeta');
+            const playerTime = document.getElementById('modalPlayerTime');
+
+            const date = new Date(recording.timestamp);
+            const dateStr = date.toLocaleDateString('en-SG', { month: 'short', day: 'numeric', year: 'numeric' });
+            const timeStr = date.toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' });
+            const duration = formatDuration(recording.duration);
+
+            const isHuman = recording.agent.type === 'human';
+            const icon = isHuman ? '👤' : '📞';
+            const typeLabel = isHuman ? 'Specialist Meeting' : 'AI Call';
+
+            // Set header
+            title.textContent = `${icon} ${typeLabel} #${recording.number}`;
+            meta.textContent = `${dateStr} at ${timeStr} | Duration: ${duration} | ${recording.agent.name} | Sentiment: ${recording.sentiment ? recording.sentiment.toFixed(1) + '/10' : 'N/A'}`;
+            playerTime.textContent = `00:00 / ${duration}`;
+
+            // Populate Summary Tab
+            populateSummaryTab(recording, isHuman, typeLabel);
+
+            // Populate Key Insights Tab
+            populateInsightsTab(recording);
+
+            // Populate Transcript Tab
+            populateTranscriptTab(recording);
+
+            // Populate AI Analysis Tab
+            populateAnalysisTab(recording);
+
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
+        }
+
+        // Populate Summary Tab
+        function populateSummaryTab(recording, isHuman, typeLabel) {
+            const summaryContent = document.getElementById('modalSummaryContent');
+
+            // Check if recording has detailed callSummary
+            if (recording.callSummary) {
+                const cs = recording.callSummary;
+                const conversionChange = cs.conversionEnd - cs.conversionStart;
+                const conversionArrow = conversionChange > 0 ? '↗️' : '↘️';
+                const conversionColor = conversionChange > 0 ? 'var(--success)' : 'var(--danger)';
+
+                summaryContent.innerHTML = `
+                    <div class="key-insight-box" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 4px 0; color: var(--ai-purple);">📋 Call Summary</h4>
+                            <p style="font-size: 15px; line-height: 1.8; margin: 0;">${recording.summary}</p>
+                        </div>
+                        <div style="background: ${cs.outcomeColor}; color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 13px; white-space: nowrap; margin-left: var(--space-lg);">
+                            ${cs.outcome}
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-bottom: var(--space-xl);">
+                        <div style="text-align: center; padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                            <div style="font-size: 24px; font-weight: 700; color: ${conversionColor};">
+                                ${cs.conversionEnd}%
+                            </div>
+                            <div style="font-size: 11px; color: var(--medium); text-transform: uppercase;">Conversion Probability</div>
+                            <div style="font-size: 12px; color: ${conversionColor}; margin-top: 4px;">
+                                ${conversionArrow} ${Math.abs(conversionChange)}% from start
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                            <div style="font-size: 24px; font-weight: 700; color: var(--success);">
+                                ${recording.sentiment ? recording.sentiment.toFixed(1) : 'N/A'}/10
+                            </div>
+                            <div style="font-size: 11px; color: var(--medium); text-transform: uppercase;">Final Sentiment</div>
+                            <div style="font-size: 12px; color: var(--success); margin-top: 4px;">
+                                😊 ${recording.sentimentLabel}
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                            <div style="font-size: 24px; font-weight: 700; color: var(--ai-purple);">
+                                ${cs.objections.length}
+                            </div>
+                            <div style="font-size: 11px; color: var(--medium); text-transform: uppercase;">Objections Handled</div>
+                            <div style="font-size: 12px; color: var(--ai-purple); margin-top: 4px;">
+                                ✅ All resolved
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Moments -->
+                    <div style="margin-bottom: var(--space-xl);">
+                        <h4 style="margin-bottom: var(--space-md); color: var(--navy-blue); font-size: 13px; text-transform: uppercase; font-weight: 700;">🎯 KEY MOMENTS</h4>
+                        ${cs.keyMoments.map(moment => `
+                            <div style="display: flex; align-items: start; gap: var(--space-md); padding: var(--space-sm); margin-bottom: var(--space-sm); background: rgba(147, 51, 234, 0.05); border-left: 3px solid var(--ai-purple); border-radius: var(--radius-sm);">
+                                <div style="font-weight: 600; color: var(--ai-purple); font-family: var(--font-mono); font-size: 12px; min-width: 50px;">${moment.time}</div>
+                                <div style="flex: 1; font-size: 13px;">${moment.description}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Objections Handled -->
+                    <div style="margin-bottom: var(--space-xl);">
+                        <h4 style="margin-bottom: var(--space-md); color: var(--navy-blue); font-size: 13px; text-transform: uppercase; font-weight: 700;">⚠️ OBJECTIONS HANDLED</h4>
+                        ${cs.objections.map(obj => `
+                            <div style="padding: var(--space-sm); margin-bottom: var(--space-sm);">
+                                <div style="color: var(--danger); font-weight: 600; font-size: 13px; margin-bottom: 4px;">❌ ${obj.objection}</div>
+                                <div style="color: var(--success); font-weight: 600; font-size: 13px;">→ ${obj.resolution}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div>
+                        <h4 style="margin-bottom: var(--space-md); color: var(--navy-blue); font-size: 13px; text-transform: uppercase; font-weight: 700;">📋 NEXT STEPS</h4>
+                        ${cs.nextSteps.map(step => `
+                            <div style="display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm); font-size: 13px; color: ${step.status === 'completed' ? 'var(--success)' : 'var(--warning)'};">
+                                <span>${step.status === 'completed' ? '✅' : '→'}</span>
+                                <span style="flex: 1;">${step.text}</span>
+                                <span style="font-size: 11px;">${step.status === 'completed' ? '(Completed)' : '(Pending)'}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                // Fallback to basic summary if no detailed callSummary
+                summaryContent.innerHTML = `
+                    <div class="key-insight-box">
+                        <h4 style="margin-bottom: var(--space-sm); color: var(--ai-purple);">📋 Call Summary</h4>
+                        <p style="font-size: 15px; line-height: 1.8;">${recording.summary}</p>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-xl);">
+                        <h4 style="margin-bottom: var(--space-md);">📊 Call Metrics</h4>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md);">
+                            <div style="text-align: center; padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                                <div style="font-size: 24px; font-weight: 700; color: var(--ai-purple);">${formatDuration(recording.duration)}</div>
+                                <div style="font-size: 12px; color: var(--medium);">Duration</div>
+                            </div>
+                            <div style="text-align: center; padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                                <div style="font-size: 24px; font-weight: 700; color: ${recording.sentiment >= 8 ? 'var(--success)' : 'var(--warning)'};">${recording.sentiment ? recording.sentiment.toFixed(1) : 'N/A'}</div>
+                                <div style="font-size: 12px; color: var(--medium);">Sentiment</div>
+                            </div>
+                            <div style="text-align: center; padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                                <div style="font-size: 24px; font-weight: 700; color: var(--navy-blue);">${recording.transcript ? recording.transcript.length : recording.meetingNotes ? recording.meetingNotes.length : 0}</div>
+                                <div style="font-size: 12px; color: var(--medium);">Exchanges</div>
+                            </div>
+                            <div style="text-align: center; padding: var(--space-md); background: var(--background); border-radius: var(--radius-sm);">
+                                <div style="font-size: 24px; font-weight: 700; color: var(--success);">${recording.outcome ? '✓' : '-'}</div>
+                                <div style="font-size: 12px; color: var(--medium);">Outcome</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${recording.conversionProbChange ? `
+                    <div style="background: ${recording.conversionProbChange > 0 ? 'rgba(0, 200, 83, 0.1)' : 'rgba(255, 107, 107, 0.1)'}; padding: var(--space-lg); border-radius: var(--radius-sm); margin-bottom: var(--space-xl);">
+                        <h4 style="margin-bottom: var(--space-sm);">📈 Impact on Conversion</h4>
+                        <p style="font-size: 16px; font-weight: 600; color: ${recording.conversionProbChange > 0 ? 'var(--success)' : 'var(--danger)'};">
+                            ${recording.conversionProbChange > 0 ? '↗️' : '↘️'} ${Math.abs(recording.conversionProbChange)}% ${recording.conversionProbChange > 0 ? 'increase' : 'decrease'} in conversion probability
+                        </p>
+                    </div>
+                    ` : ''}
+
+                    <div>
+                        <h4 style="margin-bottom: var(--space-md);">🎯 Next Actions for Agents</h4>
+                        ${generateActionItems(recording)}
+                    </div>
+                `;
+            }
+        }
+
+        // Generate action items based on recording
+        function generateActionItems(recording) {
+            let actions = [];
+
+            // Extract actions based on outcome and analysis
+            if (recording.outcome === 'quote_provided') {
+                actions.push({ text: 'Follow up within 24-48 hours to address any questions', priority: 'high' });
+                actions.push({ text: 'Send additional educational materials mentioned in the call', priority: 'medium' });
+            } else if (recording.outcome === 'objection_identified') {
+                actions.push({ text: 'Prepare objection handling materials for next touchpoint', priority: 'high' });
+                actions.push({ text: 'Schedule follow-up call within 3 days', priority: 'high' });
+            } else if (recording.outcome === 'PURCHASE_DECISION_MADE') {
+                actions.push({ text: 'Process application immediately (within 2 hours)', priority: 'high' });
+                actions.push({ text: 'Send welcome email and onboarding materials', priority: 'high' });
+                actions.push({ text: 'Schedule onboarding call for next week', priority: 'medium' });
+            } else if (recording.outcome === 'educated') {
+                actions.push({ text: 'Send summary of coverage walkthrough via email', priority: 'medium' });
+                actions.push({ text: 'Check in after 7 days to ensure no questions', priority: 'low' });
+            } else if (recording.outcome === 'nps_collected') {
+                actions.push({ text: 'Thank customer for feedback and address improvement suggestions', priority: 'medium' });
+                actions.push({ text: 'Process referral program if customer expressed interest', priority: 'high' });
+            } else if (recording.outcome === 'upsell_opportunity_identified') {
+                actions.push({ text: 'Schedule specialist consultation within 2-3 weeks', priority: 'high' });
+                actions.push({ text: 'Enroll in relevant product education campaign', priority: 'medium' });
+            }
+
+            // Default actions if none specified
+            if (actions.length === 0) {
+                actions = [
+                    { text: 'Review call transcript and update CRM notes', priority: 'medium' },
+                    { text: 'Plan next touchpoint based on customer sentiment', priority: 'low' }
+                ];
+            }
+
+            return actions.map(action => `
+                <div class="action-item">
+                    <span class="action-priority ${action.priority}">${action.priority}</span>
+                    <span style="flex: 1;">${action.text}</span>
+                </div>
+            `).join('');
+        }
+
+        // Populate Key Insights Tab
+        function populateInsightsTab(recording) {
+            const insightsContent = document.getElementById('modalInsightsContent');
+
+            // Extract key customer quotes from transcript
+            let keyQuotes = [];
+            if (recording.transcript) {
+                keyQuotes = recording.transcript
+                    .filter(line => line.speaker === 'lead' && line.text.length > 50)
+                    .slice(0, 5); // Top 5 quotes
+            }
+
+            insightsContent.innerHTML = `
+                <div>
+                    <h4 style="margin-bottom: var(--space-md);">💬 Key Customer Quotes</h4>
+                    ${keyQuotes.length > 0 ? keyQuotes.map(quote => `
+                        <div class="customer-quote">
+                            <div style="font-size: 15px; margin-bottom: var(--space-sm);">"${quote.text}"</div>
+                            <div style="font-size: 12px; color: var(--medium); font-style: normal;">
+                                — ${currentLead.fullName} at ${quote.timestamp} | Sentiment: ${quote.sentiment ? quote.sentiment.toFixed(1) + '/10' : 'N/A'}
+                            </div>
+                        </div>
+                    `).join('') : '<p style="color: var(--medium);">No significant customer quotes in this recording.</p>'}
+                </div>
+
+                <div style="margin-top: var(--space-xl);">
+                    <h4 style="margin-bottom: var(--space-md);">🎯 Key Themes & Topics Discussed</h4>
+                    ${generateKeyThemes(recording)}
+                </div>
+
+                <div style="margin-top: var(--space-xl);">
+                    <h4 style="margin-bottom: var(--space-md);">⚠️ Objections & Concerns Raised</h4>
+                    ${generateObjections(recording)}
+                </div>
+
+                <div style="margin-top: var(--space-xl);">
+                    <h4 style="margin-bottom: var(--space-md);">✅ Positive Indicators</h4>
+                    ${generatePositiveIndicators(recording)}
+                </div>
+            `;
+        }
+
+        // Generate key themes
+        function generateKeyThemes(recording) {
+            const themes = [];
+
+            if (recording.type === 'specialist_meeting') {
+                themes.push('Coverage options and policy details');
+                themes.push('Pricing and payment flexibility');
+                themes.push('Competitor comparison analysis');
+            } else if (recording.outcome === 'objection_identified') {
+                themes.push('Affordability concerns');
+                themes.push('Joint decision-making process');
+                themes.push('Payment flexibility options');
+            } else if (recording.outcome === 'educated') {
+                themes.push('How to use coverage benefits');
+                themes.push('Claim filing procedures');
+                themes.push('Hospital selection and direct billing');
+            } else if (recording.outcome === 'nps_collected') {
+                themes.push('Customer satisfaction levels');
+                themes.push('Service quality feedback');
+                themes.push('Referral opportunities');
+            }
+
+            if (themes.length === 0) {
+                themes.push('General needs assessment');
+                themes.push('Product education');
+            }
+
+            return themes.map(theme => `
+                <div style="padding: var(--space-sm) var(--space-md); background: var(--background); border-radius: var(--radius-sm); margin-bottom: var(--space-sm);">
+                    • ${theme}
+                </div>
+            `).join('');
+        }
+
+        // Generate objections
+        function generateObjections(recording) {
+            const objections = [];
+
+            if (recording.outcome === 'objection_identified') {
+                objections.push({ concern: 'Affordability', status: 'Addressed with payment breakdown' });
+                objections.push({ concern: 'Need husband\'s approval', status: 'Sent couple\'s decision guide' });
+            } else if (recording.transcript) {
+                // Look for negative sentiment exchanges
+                const negativeLines = recording.transcript.filter(line => line.speaker === 'lead' && line.sentiment && line.sentiment < 7);
+                if (negativeLines.length > 0) {
+                    objections.push({ concern: 'Some hesitation detected', status: 'Monitored in conversation' });
+                }
+            }
+
+            if (objections.length === 0) {
+                return '<p style="color: var(--success);">✓ No major objections or concerns raised</p>';
+            }
+
+            return objections.map(obj => `
+                <div style="padding: var(--space-md); background: rgba(255, 183, 71, 0.1); border-left: 3px solid var(--warning); border-radius: var(--radius-sm); margin-bottom: var(--space-sm);">
+                    <div style="font-weight: 600; margin-bottom: 4px;">⚠️ ${obj.concern}</div>
+                    <div style="font-size: 13px; color: var(--medium);">Status: ${obj.status}</div>
+                </div>
+            `).join('');
+        }
+
+        // Generate positive indicators
+        function generatePositiveIndicators(recording) {
+            const indicators = [];
+
+            if (recording.sentiment && recording.sentiment >= 8) {
+                indicators.push('Very positive sentiment throughout call');
+            }
+            if (recording.outcome === 'PURCHASE_DECISION_MADE') {
+                indicators.push('Customer proactively called in to purchase');
+            }
+            if (recording.outcome === 'nps_collected' && recording.npsScore >= 9) {
+                indicators.push(`NPS Promoter (${recording.npsScore}/10) - Willing to recommend`);
+            }
+            if (recording.conversionProbChange && recording.conversionProbChange > 5) {
+                indicators.push(`Strong positive impact on conversion (+${recording.conversionProbChange}%)`);
+            }
+
+            if (indicators.length === 0) {
+                indicators.push('Customer remained engaged throughout call');
+                indicators.push('No negative sentiment detected');
+            }
+
+            return indicators.map(indicator => `
+                <div style="padding: var(--space-sm) var(--space-md); background: rgba(0, 200, 83, 0.1); border-left: 3px solid var(--success); border-radius: var(--radius-sm); margin-bottom: var(--space-sm);">
+                    ✓ ${indicator}
+                </div>
+            `).join('');
+        }
+
+        // Populate Transcript Tab
+        function populateTranscriptTab(recording) {
+            const transcriptContent = document.getElementById('modalTranscriptContent');
+            transcriptContent.innerHTML = '';
+
+            if (recording.transcript) {
+                recording.transcript.forEach((line) => {
+                    const isAI = line.speaker === 'ai';
+                    const div = document.createElement('div');
+                    div.style.marginBottom = 'var(--space-md)';
+                    div.style.padding = 'var(--space-md)';
+                    div.style.background = isAI ? 'rgba(147, 51, 234, 0.05)' : 'rgba(228, 5, 33, 0.05)';
+                    div.style.borderRadius = 'var(--radius-sm)';
+                    div.style.borderLeft = `3px solid ${isAI ? 'var(--ai-purple)' : 'var(--aia-red)'}`;
+
+                    div.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <strong style="color: ${isAI ? 'var(--ai-purple)' : 'var(--aia-red)'};">
+                                ${isAI ? '🤖' : '👤'} ${line.name}
+                            </strong>
+                            <span style="font-size: 11px; color: var(--medium);">${line.timestamp}</span>
+                        </div>
+                        <div style="color: var(--navy-blue); line-height: 1.6;">${line.text}</div>
+                        ${line.sentiment ? `<div style="font-size: 11px; color: var(--medium); margin-top: 4px;">Sentiment: ${line.sentiment.toFixed(1)}/10 (${line.sentimentLabel})</div>` : ''}
+                    `;
+
+                    transcriptContent.appendChild(div);
+                });
+            } else if (recording.meetingNotes) {
+                recording.meetingNotes.forEach((note) => {
+                    const div = document.createElement('div');
+                    div.style.marginBottom = 'var(--space-md)';
+                    div.style.padding = 'var(--space-md)';
+                    div.style.background = 'var(--background)';
+                    div.style.borderRadius = 'var(--radius-sm)';
+                    div.style.borderLeft = '3px solid var(--medium)';
+
+                    div.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <strong style="color: var(--navy-blue);">${note.speaker}</strong>
+                            <span style="font-size: 11px; color: var(--medium);">${note.time}</span>
+                        </div>
+                        <div style="color: var(--navy-blue); line-height: 1.6;">${note.note}</div>
+                    `;
+
+                    transcriptContent.appendChild(div);
+                });
+            }
+        }
+
+        // Populate AI Analysis Tab
+        function populateAnalysisTab(recording) {
+            const analysisContent = document.getElementById('modalAnalysisContent');
+            analysisContent.innerHTML = `
+                <div class="key-insight-box">
+                    <h4 style="margin-bottom: var(--space-sm); color: var(--ai-purple);">🧠 AI Analysis</h4>
+                    <p style="font-size: 15px; line-height: 1.8;">${recording.aiAnalysis || 'No AI analysis available for this recording.'}</p>
+                </div>
+
+                <div style="margin-top: var(--space-xl);">
+                    <h4 style="margin-bottom: var(--space-md);">📊 Conversation Metrics</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-md);">
+                        <div style="padding: var(--space-lg); background: var(--background); border-radius: var(--radius-sm);">
+                            <div style="font-size: 12px; color: var(--medium); margin-bottom: 4px;">Engagement Level</div>
+                            <div style="font-size: 20px; font-weight: 700; color: var(--ai-purple);">${recording.engagement || 'N/A'}</div>
+                        </div>
+                        <div style="padding: var(--space-lg); background: var(--background); border-radius: var(--radius-sm);">
+                            <div style="font-size: 12px; color: var(--medium); margin-bottom: 4px;">Intent Level</div>
+                            <div style="font-size: 20px; font-weight: 700; color: var(--navy-blue);">${recording.intent || 'N/A'}</div>
+                        </div>
+                        <div style="padding: var(--space-lg); background: var(--background); border-radius: var(--radius-sm);">
+                            <div style="font-size: 12px; color: var(--medium); margin-bottom: 4px;">Campaign</div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--navy-blue);">${recording.campaign}</div>
+                        </div>
+                        <div style="padding: var(--space-lg); background: var(--background); border-radius: var(--radius-sm);">
+                            <div style="font-size: 12px; color: var(--medium); margin-bottom: 4px;">Outcome</div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--success);">${recording.outcome ? recording.outcome.replace(/_/g, ' ') : 'N/A'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                ${recording.documentsProvided ? `
+                <div style="margin-top: var(--space-xl);">
+                    <h4 style="margin-bottom: var(--space-md);">📎 Documents Shared</h4>
+                    ${recording.documentsProvided.map(doc => `
+                        <div style="padding: var(--space-sm) var(--space-md); background: var(--background); border-radius: var(--radius-sm); margin-bottom: var(--space-sm);">
+                            📄 ${doc}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                ${recording.nextSteps ? `
+                <div style="margin-top: var(--space-xl);">
+                    <h4 style="margin-bottom: var(--space-md);">🎯 Next Steps Agreed</h4>
+                    <div style="padding: var(--space-md); background: rgba(147, 51, 234, 0.1); border-left: 3px solid var(--ai-purple); border-radius: var(--radius-sm);">
+                        ${recording.nextSteps}
+                    </div>
+                </div>
+                ` : ''}
+            `;
+        }
+
+        // Switch modal tabs
+        function switchModalTab(tabName) {
+            // Update tab styling
+            document.querySelectorAll('.modal-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.modal-tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('modalTab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add('active');
+        }
+
+        // Close recording modal
+        function closeRecordingModal() {
+            document.getElementById('recordingModal').classList.remove('active');
+            document.body.style.overflow = ''; // Restore scroll
+        }
+
+        // Close modal when clicking outside
+        function closeModalOnOutsideClick(event) {
+            if (event.target.id === 'recordingModal') {
+                closeRecordingModal();
+            }
+        }
+
+        // ESC key to close modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeRecordingModal();
+            }
+        });
+
+        // Format duration in seconds to mm:ss
+        function formatDuration(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}m ${secs}s`;
+        }
+
+        // Action functions
+        function sendEmail() {
+            showToast('Email composer opened', 'info');
+        }
+
+        function sendSMS() {
+            showToast('SMS composer opened', 'info');
+        }
+
+        function bookAppointment() {
+            showToast('Appointment booking calendar opened', 'success');
+        }
+
+        function playRecording() {
+            showToast('Playing call recording... (Demo mode - no actual audio)', 'info');
+        }
+
+        function downloadRecording() {
+            showToast('Downloading call recording...', 'info');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.style.position = 'fixed';
+            toast.style.top = '20px';
+            toast.style.right = '20px';
+            toast.style.zIndex = '10000';
+
+            const icons = { success: '✅', warning: '⚠️', danger: '❌', info: 'ℹ️' };
+
+            toast.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px; padding: var(--space-md);">
+                    <span style="font-size: 20px;">${icons[type]}</span>
+                    <span>${message}</span>
+                </div>
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Get lead data from URL parameter
+        let currentLead = sarahChen; // Default to Sarah Chen
+
+        function getLeadFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const leadId = urlParams.get('id');
+
+            if (!leadId) {
+                return sarahChen; // Default if no ID
+            }
+
+            // Map of lead IDs to lead objects
+            const leadMap = {
+                'LC-2025-8472': sarahChen,
+                'LC-2025-8473': michaelTan,
+                'LC-2025-8474': lindaWong,
+                'LC-2025-8475': davidLim,
+                'LC-2025-8476': amandaNg
+            };
+
+            return leadMap[leadId] || sarahChen;
+        }
+
+        // Populate lead profile dynamically
+        function populateLeadProfile(lead) {
+            // Update page title
+            document.title = `${lead.fullName} - Lead Profile - LeadPulseAI`;
+
+            // Update header info
+            const avatarInitials = lead.firstName.charAt(0) + lead.lastName.charAt(0);
+            document.querySelector('.profile-avatar-large').textContent = avatarInitials;
+            document.querySelector('.profile-info h1').textContent = lead.fullName;
+
+            // Update meta info
+            const metaInfo = document.querySelector('.profile-meta');
+            metaInfo.innerHTML = `
+                <span>✉️ ${lead.email}</span>
+                <span>📞 ${lead.phone}</span>
+                <span>👤 Age: ${lead.age}, ${lead.maritalStatus}</span>
+                <span>📍 ${lead.location || 'Singapore'}</span>
+                <span>🆔 ID: ${lead.id}</span>
+            `;
+
+            // Update LTV section
+            const ltvSection = document.querySelector('.profile-main > div:last-child');
+            const ltvAmount = lead.estimatedLTV ? `$${(lead.estimatedLTV / 1000).toFixed(0)}K` : 'N/A';
+            const customerStatus = lead.lifecycleStage || lead.stage;
+            const npsText = lead.npsScore ? `NPS ${lead.npsScore}/10` : '';
+
+            ltvSection.innerHTML = `
+                <div style="font-size: 12px; color: var(--medium); margin-bottom: 4px;">LIFETIME VALUE</div>
+                <div style="font-size: 48px; font-weight: 700; color: var(--success); font-family: var(--font-mono);">${ltvAmount}</div>
+                <div style="font-size: 11px; color: var(--success); margin-top: 4px;">✅ ${customerStatus} ${npsText ? '| ' + npsText : ''}</div>
+            `;
+
+            // Populate campaigns
+            populateActiveCampaigns(lead);
+
+            // Populate all overview sections
+            populateOverviewTab(lead);
+        }
+
+        // Populate active campaigns from timeline events
+        function populateActiveCampaigns(lead) {
+            const campaignsContent = document.getElementById('activeCampaignsContent');
+
+            if (!lead.timelineEvents) {
+                campaignsContent.innerHTML = '<p style="color: var(--medium); font-size: 13px;">No campaigns enrolled</p>';
+                return;
+            }
+
+            // Find all campaign enrollment events
+            const campaignEvents = lead.timelineEvents.filter(event =>
+                event.type === 'campaign_enrollment' || event.campaign
+            );
+
+            if (campaignEvents.length === 0) {
+                campaignsContent.innerHTML = '<p style="color: var(--medium); font-size: 13px;">No campaigns enrolled</p>';
+                return;
+            }
+
+            // Get unique campaigns
+            const uniqueCampaigns = {};
+            campaignEvents.forEach(event => {
+                const campaignName = event.campaign || event.description;
+                if (campaignName && !uniqueCampaigns[campaignName]) {
+                    uniqueCampaigns[campaignName] = {
+                        name: campaignName,
+                        enrolledDate: event.timestamp,
+                        status: event.outcome || 'active'
+                    };
+                }
+            });
+
+            // Render campaigns
+            let html = '';
+            Object.values(uniqueCampaigns).forEach(campaign => {
+                const date = new Date(campaign.enrolledDate);
+                const dateStr = date.toLocaleDateString('en-SG', { month: 'short', day: 'numeric', year: 'numeric' });
+                const statusBadge = campaign.status === 'active' || campaign.status === 'enrolled'
+                    ? '<span class="badge badge-success">ACTIVE</span>'
+                    : '<span class="badge badge-info">COMPLETED</span>';
+
+                html += `
+                    <div style="margin-bottom: var(--space-md); padding-bottom: var(--space-md); border-bottom: 1px solid var(--light);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+                            <div style="font-weight: 600; font-size: 14px;">${campaign.name}</div>
+                            ${statusBadge}
+                        </div>
+                        <div style="font-size: 12px; color: var(--medium);">
+                            Enrolled: ${dateStr}
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Remove last border
+            html = html.replace(/border-bottom: 1px solid var\(--light\);(?!.*border-bottom)/, '');
+
+            campaignsContent.innerHTML = html || '<p style="color: var(--medium); font-size: 13px;">No campaigns enrolled</p>';
+        }
+
+        // Populate Overview tab sections
+        function populateOverviewTab(lead) {
+            populateLeadMetrics(lead);
+            populateTriggerEvents(lead);
+            populateCoverage(lead);
+            populateRecommendedProducts(lead);
+            populateBehavioralInsights(lead);
+            populateAIStrategy(lead);
+        }
+
+        function populateLeadMetrics(lead) {
+            const content = document.getElementById('leadMetricsContent');
+            const isCustomer = lead.customerStatus === 'Active' || lead.lifecycleStage === 'Loyal Customer' || lead.lifecycleStage === 'Active Customer';
+
+            let html = '<div style="margin-bottom: var(--space-md);">';
+            html += '<div style="font-weight: 600; margin-bottom: 4px;">Lead Score</div>';
+            html += '<div class="flex items-center gap-md">';
+            html += '<div class="progress w-full">';
+            html += `<div class="progress-bar progress-bar-primary" style="width: ${lead.leadScore || 50}%;"></div>`;
+            html += '</div>';
+            html += `<strong>${lead.leadScore || 50}/100</strong>`;
+            html += '</div></div>';
+
+            html += `<div><strong>Conversion Probability:</strong> ${lead.conversionProbability || 0}%</div>`;
+            html += `<div><strong>Estimated LTV:</strong> $${(lead.estimatedLTV || 0).toLocaleString()}</div>`;
+            html += `<div><strong>Stage:</strong> ${lead.stage || 'New'}</div>`;
+            html += `<div><strong>Temperature:</strong> ${lead.temperature || 'cold'}</div>`;
+
+            if (isCustomer) {
+                if (lead.daysAsCustomer) html += `<div><strong>Customer Since:</strong> ${lead.daysAsCustomer} days</div>`;
+                if (lead.activePolicies) html += `<div><strong>Active Policies:</strong> ${lead.activePolicies}</div>`;
+                if (lead.npsScore) html += `<div><strong>NPS Score:</strong> ${lead.npsScore}/10</div>`;
+            } else {
+                html += `<div><strong>Days in Pipeline:</strong> ${lead.daysInPipeline || 0}</div>`;
+            }
+
+            html += `<div><strong>Engagement Rate:</strong> ${lead.engagementRate || 0}%</div>`;
+
+            content.innerHTML = html;
+        }
+
+        function populateTriggerEvents(lead) {
+            const content = document.getElementById('triggerEventsContent');
+
+            if (!lead.triggerEvents || lead.triggerEvents.length === 0) {
+                content.innerHTML = '<p style="color: var(--medium); font-size: 13px;">No trigger events detected</p>';
+                return;
+            }
+
+            let html = '';
+            lead.triggerEvents.forEach((event, index) => {
+                const badgeClass = event.priority === 'high' ? 'badge-danger' : event.priority === 'medium' ? 'badge-warning' : 'badge-info';
+                const icon = event.type === 'pregnancy' ? '🍼' :
+                            event.type === 'birthday' ? '🎂' :
+                            event.type === 'property_purchase' ? '🏠' :
+                            event.type === 'career_milestone' ? '💼' : '🎯';
+
+                html += `<div style="${index > 0 ? 'margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--light);' : ''}">`;
+                html += `<div class="badge ${badgeClass}" style="margin-bottom: 8px;">${icon} ${event.title || event.type}</div>`;
+                html += `<div style="font-size: 13px;">`;
+                if (event.details) html += `<div>${event.details}</div>`;
+                if (event.detected) {
+                    const date = new Date(event.detected);
+                    html += `<div>Detected: ${date.toLocaleDateString('en-SG', { month: 'short', day: 'numeric', year: 'numeric' })}</div>`;
+                }
+                if (event.source) html += `<div>Source: ${event.source}</div>`;
+                if (event.intentWindow) html += `<div><strong>Intent Window: ${event.intentWindow.toUpperCase()}</strong></div>`;
+                html += `</div></div>`;
+            });
+
+            content.innerHTML = html;
+        }
+
+        function populateCoverage(lead) {
+            const content = document.getElementById('coverageContent');
+            let html = '';
+
+            // Current Coverage
+            if (lead.currentCoverage && lead.currentCoverage.length > 0) {
+                html += '<div style="margin-bottom: var(--space-md);"><strong>✅ Current Policies:</strong>';
+                html += '<div style="margin-left: 16px; margin-top: 4px; font-size: 13px;">';
+                lead.currentCoverage.forEach(policy => {
+                    html += `• ${policy.type} - $${policy.coverage?.toLocaleString() || 'N/A'}<br>`;
+                    if (policy.premium) html += `&nbsp;&nbsp;Premium: $${policy.premium}/month<br>`;
+                    if (policy.status) html += `&nbsp;&nbsp;Status: ${policy.status}<br>`;
+                });
+                html += '</div></div>';
+            }
+
+            // Coverage Gaps
+            if (lead.coverageGaps && lead.coverageGaps.length > 0) {
+                html += '<div><strong style="color: var(--danger);">⚠️ Coverage Gaps:</strong>';
+                html += '<div style="margin-left: 16px; margin-top: 4px; font-size: 13px;">';
+                lead.coverageGaps.forEach(gap => {
+                    const color = gap.severity === 'critical' ? 'var(--danger)' : 'var(--warning)';
+                    const icon = gap.severity === 'critical' ? '🔴 CRITICAL' : '🟡 MODERATE';
+                    html += `<div style="color: ${color};">${icon}: ${gap.title}</div>`;
+                    if (gap.description) html += `<div style="margin-left: 20px; font-size: 12px; color: var(--medium);">${gap.description}</div>`;
+                });
+                html += '</div></div>';
+            }
+
+            if (!html) {
+                html = '<p style="color: var(--medium); font-size: 13px;">No coverage information available</p>';
+            }
+
+            content.innerHTML = html;
+        }
+
+        function populateRecommendedProducts(lead) {
+            const content = document.getElementById('recommendedProductsContent');
+
+            if (!lead.recommendedProducts || lead.recommendedProducts.length === 0) {
+                content.innerHTML = '<p style="color: var(--medium);">No product recommendations available</p>';
+                return;
+            }
+
+            let html = '';
+            let totalPremium = 0;
+            let avgCloseProb = 0;
+
+            lead.recommendedProducts.forEach((product, index) => {
+                totalPremium += product.premium || 0;
+                avgCloseProb += (product.closeProbability || 0) * 100;
+
+                html += `<div style="${index < lead.recommendedProducts.length - 1 ? 'margin-bottom: 12px;' : ''}">`;
+                html += `<div style="font-weight: 600;">${index + 1}. ${product.name}</div>`;
+                html += `<div style="color: var(--medium); margin-left: 12px;">`;
+                html += `$${product.premium}/month | Close Prob: ${((product.closeProbability || 0) * 100).toFixed(0)}%<br>`;
+                if (product.benefits && product.benefits[0]) html += product.benefits[0];
+                html += `</div></div>`;
+            });
+
+            if (lead.recommendedProducts.length > 0) {
+                avgCloseProb = avgCloseProb / lead.recommendedProducts.length;
+                html += `<div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--light); font-weight: 600;">`;
+                html += `Total Bundle: $${totalPremium}/month<br>`;
+                html += `Est. Close Rate: ${avgCloseProb.toFixed(0)}%`;
+                html += `</div>`;
+            }
+
+            content.innerHTML = html;
+        }
+
+        function populateBehavioralInsights(lead) {
+            const content = document.getElementById('behavioralInsightsContent');
+
+            if (!lead.behavioralInsights) {
+                content.innerHTML = '<p style="color: var(--medium);">No behavioral insights available yet</p>';
+                return;
+            }
+
+            const insights = lead.behavioralInsights;
+            let html = '';
+
+            if (insights.communicationStyle) html += `<div><strong>Communication Style:</strong> ${insights.communicationStyle}</div>`;
+            if (insights.decisionMaking) html += `<div><strong>Decision Making:</strong> ${insights.decisionMaking}</div>`;
+            if (insights.objections && insights.objections.length > 0) html += `<div><strong>Objections:</strong> ${insights.objections.join(', ')}</div>`;
+            if (insights.painPoints) html += `<div><strong>Pain Points:</strong> ${insights.painPoints}</div>`;
+            if (insights.positiveSignals) html += `<div><strong>Positive Signals:</strong> ${insights.positiveSignals}</div>`;
+            if (insights.engagementPattern) html += `<div><strong>Engagement Pattern:</strong> ${insights.engagementPattern}</div>`;
+            if (insights.competitorsMentioned && insights.competitorsMentioned.length > 0) html += `<div><strong>Competitors:</strong> ${insights.competitorsMentioned.join(', ')}</div>`;
+            if (insights.emotionalState) html += `<div><strong>Emotional State:</strong> ${insights.emotionalState}</div>`;
+            if (insights.trustLevel) html += `<div><strong>Trust Level:</strong> ${insights.trustLevel}</div>`;
+
+            content.innerHTML = html || '<p style="color: var(--medium);">No behavioral insights available yet</p>';
+        }
+
+        function populateAIStrategy(lead) {
+            const content = document.getElementById('aiStrategyContent');
+
+            if (!lead.aiStrategy) {
+                content.innerHTML = '<p style="color: var(--medium);">No AI strategy available</p>';
+                return;
+            }
+
+            const strategy = lead.aiStrategy;
+            let html = '';
+
+            if (strategy.tone) html += `<div>✓ Tone: ${strategy.tone}</div>`;
+            if (strategy.focus) html += `<div>✓ Focus: ${strategy.focus}</div>`;
+            if (strategy.positioning) html += `<div>✓ Positioning: ${strategy.positioning}</div>`;
+            if (strategy.urgency) html += `<div>✓ Urgency: ${strategy.urgency}</div>`;
+
+            if (strategy.nextBestActions && strategy.nextBestActions.length > 0) {
+                html += '<div style="margin-top: var(--space-md); font-weight: 600;">Next Best Actions:</div>';
+                strategy.nextBestActions.forEach(action => {
+                    html += `<div>✓ ${action}</div>`;
+                });
+            }
+
+            content.innerHTML = html || '<p style="color: var(--medium);">No AI strategy available</p>';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            // Load the correct lead based on URL
+            currentLead = getLeadFromURL();
+            populateLeadProfile(currentLead);
+
+            // Scroll animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'slideIn 0.5s ease-out';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.metric-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

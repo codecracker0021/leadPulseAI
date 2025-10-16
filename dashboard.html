@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LeadPulseAI</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 70px 1fr;
+            height: 100vh;
+            background: var(--background);
+        }
+
+        .top-nav {
+            grid-column: 1 / -1;
+            background: white;
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy-blue);
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .search-box {
+            width: 400px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .sidebar {
+            background: var(--navy-blue);
+            color: white;
+            padding: var(--space-lg);
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            margin-bottom: var(--space-sm);
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            background: var(--aia-red);
+            color: white;
+        }
+
+        .nav-item.demo {
+            background: var(--ai-purple);
+            margin-top: var(--space-lg);
+        }
+
+        .main-content {
+            padding: var(--space-lg);
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal);
+            border-left: 4px solid transparent;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card.revenue { border-left-color: var(--success); }
+        .stat-card.calls { border-left-color: var(--info); }
+        .stat-card.conversion { border-left-color: var(--aia-red); }
+        .stat-card.time { border-left-color: var(--ai-purple); }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--medium);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--navy-blue);
+            margin-bottom: var(--space-sm);
+            font-family: var(--font-mono);
+        }
+
+        .stat-change {
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.positive { color: var(--success); }
+        .stat-change.negative { color: var(--danger); }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .activity-feed {
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .feed-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .feed-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy-blue);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .feed-content {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--light);
+            transition: background-color var(--transition-fast);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .activity-item:hover {
+            background: var(--background);
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-sm);
+        }
+
+        .activity-lead {
+            font-weight: 600;
+            color: var(--navy-blue);
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: var(--medium);
+        }
+
+        .activity-status {
+            font-size: 13px;
+            color: var(--medium);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .activity-actions {
+            margin-top: var(--space-md);
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .hot-leads-panel {
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .lead-card {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--light);
+            transition: background-color var(--transition-fast);
+        }
+
+        .lead-card:hover {
+            background: var(--background);
+        }
+
+        .lead-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .lead-name {
+            font-weight: 600;
+            color: var(--navy-blue);
+        }
+
+        .lead-meta {
+            font-size: 12px;
+            color: var(--medium);
+            margin-bottom: var(--space-sm);
+        }
+
+        .lead-actions {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(228, 5, 33, 0.1);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--aia-red);
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--aia-red);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="flex items-center gap-md">
+                <div class="logo">
+                    <span class="logo-icon">🎯</span>
+                    <span>LeadPulseAI</span>
+                </div>
+                <input type="search" class="form-input search-box" placeholder="Search leads, campaigns, conversations...">
+            </div>
+            <div class="nav-actions">
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    <span>47 Active Calls</span>
+                </div>
+                <div class="indicator">
+                    <button class="btn-icon" onclick="showNotifications()">🔔</button>
+                    <span class="indicator-badge">12</span>
+                </div>
+                <div class="dropdown">
+                    <div class="avatar" onclick="toggleUserMenu()">
+                        <span style="font-size: 14px;">AM</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <nav>
+                <a href="dashboard.html" class="nav-item active">
+                    <span>🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="calling.html" class="nav-item">
+                    <span>📞</span>
+                    <span>AI Calling Center</span>
+                </a>
+                <a href="leads-pipeline.html" class="nav-item">
+                    <span>👥</span>
+                    <span>Leads Pipeline</span>
+                </a>
+                <a href="analytics.html" class="nav-item">
+                    <span>📊</span>
+                    <span>Analytics & ROI</span>
+                </a>
+                <a href="campaigns.html" class="nav-item">
+                    <span>🎯</span>
+                    <span>Campaigns</span>
+                </a>
+                <a href="calendar.html" class="nav-item">
+                    <span>📅</span>
+                    <span>Calendar</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span>
+                    <span>Settings</span>
+                </a>
+                <div style="margin: var(--space-lg) 0; height: 1px; background: rgba(255,255,255,0.2);"></div>
+                <a href="demo-mode.html" class="nav-item demo">
+                    <span>🎬</span>
+                    <span>Demo Mode</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card revenue">
+                    <div class="stat-label">Revenue This Month</div>
+                    <div class="stat-value" id="revenue">$0</div>
+                    <div class="stat-change positive">
+                        <span>↗️</span>
+                        <span>+18% vs last month</span>
+                    </div>
+                </div>
+
+                <div class="stat-card calls">
+                    <div class="stat-label">Active AI Calls</div>
+                    <div class="stat-value" id="activeCalls">0</div>
+                    <div class="stat-change positive">
+                        <span>↗️</span>
+                        <span>+12% vs yesterday</span>
+                    </div>
+                </div>
+
+                <div class="stat-card conversion">
+                    <div class="stat-label">Conversion Rate</div>
+                    <div class="stat-value" id="conversionRate">0%</div>
+                    <div class="stat-change positive">
+                        <span>↗️</span>
+                        <span>+20.3pp vs baseline</span>
+                    </div>
+                </div>
+
+                <div class="stat-card time">
+                    <div class="stat-label">Avg Time to Convert</div>
+                    <div class="stat-value" id="avgTime">0</div>
+                    <div class="stat-change positive">
+                        <span>↘️</span>
+                        <span>-36 days improvement</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Feed + Hot Leads -->
+            <div class="content-grid">
+                <!-- Live Activity Feed -->
+                <div class="activity-feed">
+                    <div class="feed-header">
+                        <h3 class="feed-title">
+                            <span class="live-dot"></span>
+                            Live Activity Feed
+                        </h3>
+                        <button class="btn btn-sm btn-ghost" onclick="refreshActivity()">🔄 Refresh</button>
+                    </div>
+                    <div class="feed-content" id="activityFeed">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Hot Leads Panel -->
+                <div class="hot-leads-panel">
+                    <div class="feed-header">
+                        <h3 class="feed-title">
+                            🔥 Hot Leads Ready
+                        </h3>
+                        <span class="badge badge-danger" id="hotLeadCount">0</span>
+                    </div>
+                    <div id="hotLeadsList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Footer -->
+            <div class="card">
+                <div class="flex items-center justify-between">
+                    <div class="text-center" style="flex: 1;">
+                        <div class="text-2xl font-bold text-navy-blue" id="leadsNurtured">0</div>
+                        <div class="text-sm text-medium">Leads Nurtured Today</div>
+                    </div>
+                    <div class="divider-vertical"></div>
+                    <div class="text-center" style="flex: 1;">
+                        <div class="text-2xl font-bold text-navy-blue" id="appointmentsBooked">0</div>
+                        <div class="text-sm text-medium">Appointments Booked</div>
+                    </div>
+                    <div class="divider-vertical"></div>
+                    <div class="text-center" style="flex: 1;">
+                        <div class="text-2xl font-bold text-navy-blue" id="aiCallsToday">0</div>
+                        <div class="text-sm text-medium">AI Calls Completed</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/data.js"></script>
+    <script>
+        // Animation helper
+        function animateValue(element, start, end, duration, prefix = '', suffix = '') {
+            let current = start;
+            const range = end - start;
+            const increment = range / (duration / 16);
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = prefix + Math.round(current).toLocaleString() + suffix;
+            }, 16);
+        }
+
+        // Format currency
+        function formatCurrency(value) {
+            return '$' + (value / 1000000).toFixed(1) + 'M';
+        }
+
+        // Time ago formatter
+        function timeAgo(timestamp) {
+            const now = new Date();
+            const past = new Date(timestamp);
+            const seconds = Math.floor((now - past) / 1000);
+
+            if (seconds < 60) return `${seconds} seconds ago`;
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+            return `${Math.floor(seconds / 86400)} days ago`;
+        }
+
+        // Create activity item
+        function createActivityItem(activity) {
+            const div = document.createElement('div');
+            div.className = 'activity-item';
+
+            let content = '';
+            let badgeClass = 'badge-info';
+            let actionButtons = '';
+
+            switch(activity.type) {
+                case 'call_active':
+                    badgeClass = 'badge-danger';
+                    content = `
+                        <div class="activity-header">
+                            <div>
+                                <div class="activity-lead">🔴 LIVE: ${activity.lead}</div>
+                                <div class="activity-status">
+                                    <span class="badge ${badgeClass}">Active Call</span>
+                                    <span>Agent: ${activity.agent}</span>
+                                </div>
+                            </div>
+                            <div class="activity-time">${activity.duration}</div>
+                        </div>
+                        <div style="margin-top: var(--space-sm);">
+                            <div class="text-sm">Status: ${activity.status}</div>
+                            <div class="text-sm">Sentiment: ${activity.sentiment}</div>
+                        </div>
+                    `;
+                    actionButtons = `
+                        <button class="btn btn-sm btn-primary" onclick="location.href='calling.html'">🎧 Listen Live</button>
+                        <button class="btn btn-sm btn-ghost">📄 View Transcript</button>
+                    `;
+                    break;
+
+                case 'handoff':
+                    badgeClass = 'badge-success';
+                    content = `
+                        <div class="activity-header">
+                            <div>
+                                <div class="activity-lead">✅ ${activity.lead}</div>
+                                <div class="activity-status">
+                                    <span class="badge ${badgeClass}">Agent Handoff</span>
+                                    <span>→ ${activity.agent}</span>
+                                </div>
+                            </div>
+                            <div class="activity-time">${activity.timestamp}</div>
+                        </div>
+                        <div style="margin-top: var(--space-sm);">
+                            <div class="text-sm">Appointment: ${activity.appointment}</div>
+                            <div class="text-sm">Status: ${activity.status}</div>
+                        </div>
+                    `;
+                    actionButtons = `
+                        <button class="btn btn-sm btn-success" onclick="location.href='lead-profile.html?id=LC-2025-8472'">👁️ View Lead</button>
+                    `;
+                    break;
+
+                case 'call_completed':
+                    badgeClass = 'badge-info';
+                    content = `
+                        <div class="activity-header">
+                            <div>
+                                <div class="activity-lead">📞 ${activity.lead}</div>
+                                <div class="activity-status">
+                                    <span class="badge ${badgeClass}">Call Completed</span>
+                                    <span>Agent: ${activity.agent}</span>
+                                </div>
+                            </div>
+                            <div class="activity-time">${activity.timestamp}</div>
+                        </div>
+                        <div style="margin-top: var(--space-sm);">
+                            <div class="text-sm">Duration: ${activity.duration}</div>
+                            <div class="text-sm">Outcome: ${activity.outcome}</div>
+                        </div>
+                    `;
+                    break;
+
+                case 'trigger':
+                    badgeClass = 'badge-warning';
+                    content = `
+                        <div class="activity-header">
+                            <div>
+                                <div class="activity-lead">🎂 ${activity.lead}</div>
+                                <div class="activity-status">
+                                    <span class="badge ${badgeClass}">Trigger Event</span>
+                                    <span>${activity.trigger}</span>
+                                </div>
+                            </div>
+                            <div class="activity-time">${activity.timestamp}</div>
+                        </div>
+                        <div style="margin-top: var(--space-sm);">
+                            <div class="text-sm">Campaign: ${activity.campaign}</div>
+                            <div class="text-sm">${activity.status}</div>
+                        </div>
+                    `;
+                    break;
+            }
+
+            div.innerHTML = content + (actionButtons ? `<div class="activity-actions">${actionButtons}</div>` : '');
+            return div;
+        }
+
+        // Create hot lead card
+        function createHotLeadCard(lead) {
+            const div = document.createElement('div');
+            div.className = 'lead-card';
+
+            const tempColor = lead.temperature === 'hot' ? 'danger' : 'warning';
+            const tempIcon = lead.temperature === 'hot' ? '🔥' : '🟡';
+
+            div.innerHTML = `
+                <div class="lead-header">
+                    <div class="avatar">${lead.name.split(' ').map(n => n[0]).join('')}</div>
+                    <div style="flex: 1;">
+                        <div class="lead-name">${lead.name}</div>
+                        <div class="flex items-center gap-sm" style="margin-top: 4px;">
+                            <span class="badge badge-${tempColor}">${tempIcon} ${lead.temperature.toUpperCase()}</span>
+                            <span class="badge badge-info">${lead.conversionProbability}%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="lead-meta">
+                    <div>📊 Lead Score: ${lead.leadScore}/100</div>
+                    <div>💰 Est. LTV: $${lead.estimatedLTV.toLocaleString()}</div>
+                    <div>📞 Last Contact: ${lead.lastContact}</div>
+                    <div>⏭️ Next: ${lead.nextAction}</div>
+                </div>
+                <div class="lead-actions">
+                    <button class="btn btn-sm btn-primary w-full" onclick="location.href='lead-profile.html?id=${lead.id}'">
+                        👁️ View Profile
+                    </button>
+                </div>
+            `;
+
+            return div;
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+
+            const icons = {
+                success: '✅',
+                warning: '⚠️',
+                danger: '❌',
+                info: 'ℹ️'
+            };
+
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type]}</div>
+                <div class="toast-content">
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // Initialize dashboard
+        function initDashboard() {
+            // Animate stats
+            setTimeout(() => {
+                animateValue(document.getElementById('revenue'), 0, dashboardStats.revenueThisMonth, 2000, '', '');
+                document.getElementById('revenue').textContent = formatCurrency(dashboardStats.revenueThisMonth) + ' SGD';
+            }, 300);
+
+            setTimeout(() => {
+                animateValue(document.getElementById('activeCalls'), 0, dashboardStats.activeAICalls, 1500);
+            }, 500);
+
+            setTimeout(() => {
+                document.getElementById('conversionRate').textContent = dashboardStats.conversionRate + '%';
+            }, 700);
+
+            setTimeout(() => {
+                document.getElementById('avgTime').textContent = dashboardStats.avgTimeToConvert + ' days';
+            }, 900);
+
+            // Animate footer stats
+            setTimeout(() => {
+                animateValue(document.getElementById('leadsNurtured'), 0, dashboardStats.leadsCaptured, 2000);
+            }, 1100);
+
+            setTimeout(() => {
+                animateValue(document.getElementById('appointmentsBooked'), 0, dashboardStats.aiCallsToday, 1800);
+            }, 1300);
+
+            setTimeout(() => {
+                animateValue(document.getElementById('aiCallsToday'), 0, dashboardStats.aiCallsToday, 1600);
+            }, 1500);
+
+            // Load activity feed
+            const feedContainer = document.getElementById('activityFeed');
+            liveActivity.forEach((activity, index) => {
+                setTimeout(() => {
+                    feedContainer.appendChild(createActivityItem(activity));
+                }, index * 200);
+            });
+
+            // Load hot leads
+            const hotLeadsContainer = document.getElementById('hotLeadsList');
+            const hotLeads = [sarahChen, ...activeLeads.filter(l => l.temperature === 'hot')];
+            hotLeads.forEach((lead, index) => {
+                setTimeout(() => {
+                    hotLeadsContainer.appendChild(createHotLeadCard({
+                        ...lead,
+                        name: lead.fullName || lead.name,
+                        id: lead.id
+                    }));
+                }, index * 150);
+            });
+
+            document.getElementById('hotLeadCount').textContent = hotLeads.length;
+
+            // Welcome toast
+            setTimeout(() => {
+                showToast('Welcome back! 47 active AI calls in progress.', 'success');
+            }, 1000);
+        }
+
+        // Refresh activity
+        function refreshActivity() {
+            showToast('Activity feed refreshed', 'info');
+            // In real app, would fetch new data
+        }
+
+        // Simulate real-time updates
+        function startRealTimeUpdates() {
+            setInterval(() => {
+                // Randomly update active calls
+                const currentCalls = parseInt(document.getElementById('activeCalls').textContent);
+                const newCalls = currentCalls + Math.floor(Math.random() * 3) - 1;
+                if (newCalls >= 0) {
+                    document.getElementById('activeCalls').textContent = Math.max(newCalls, 40);
+                }
+            }, 10000);
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            initDashboard();
+            startRealTimeUpdates();
+        });
+
+        // Placeholder functions
+        function showNotifications() {
+            showToast('You have 12 new notifications', 'info');
+        }
+
+        function toggleUserMenu() {
+            showToast('User menu coming soon', 'info');
+        }
+    </script>
+</body>
+</html>

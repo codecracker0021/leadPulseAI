@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Mode - Sarah Chen's Journey - LeadPulseAI</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .demo-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, #1B365D 0%, #2D5A8F 100%);
+            color: white;
+            padding: var(--space-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+        }
+
+        .demo-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .demo-progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 4px;
+            position: relative;
+        }
+
+        .demo-progress-fill {
+            background: var(--neon-green);
+            height: 100%;
+            width: 0%;
+            transition: width 1s ease-out;
+        }
+
+        .demo-steps {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+            background: rgba(27, 54, 93, 0.5);
+            color: white;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: var(--space-sm);
+            font-size: 13px;
+            opacity: 0.5;
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .step.active {
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        .step.completed {
+            opacity: 0.7;
+        }
+
+        .step.completed::after {
+            content: '✓';
+            position: absolute;
+            top: -8px;
+            right: 8px;
+            background: var(--success);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .demo-content {
+            flex: 1;
+            position: relative;
+            background: var(--background);
+            overflow: hidden;
+        }
+
+        .demo-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        .demo-narration {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: var(--space-xl);
+            border-radius: var(--radius-lg);
+            max-width: 800px;
+            width: 90%;
+            box-shadow: var(--shadow-xl);
+            animation: slideIn 0.5s ease-out;
+            z-index: 100;
+        }
+
+        .narration-text {
+            font-size: 18px;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        .demo-spotlight {
+            position: absolute;
+            border: 3px solid var(--neon-green);
+            border-radius: var(--radius-md);
+            pointer-events: none;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+            z-index: 99;
+        }
+
+        .skip-button {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.8; }
+        }
+
+        .intro-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1B365D 0%, #2D5A8F 50%, #3A7BC8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            color: white;
+            text-align: center;
+        }
+
+        .intro-content {
+            max-width: 800px;
+            padding: var(--space-2xl);
+        }
+
+        .intro-title {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: var(--space-lg);
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro-subtitle {
+            font-size: 24px;
+            margin-bottom: var(--space-xl);
+            opacity: 0.9;
+        }
+
+        .intro-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-xl);
+            margin: var(--space-2xl) 0;
+        }
+
+        .intro-stat {
+            padding: var(--space-lg);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-md);
+        }
+
+        .intro-stat-value {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .intro-stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .demo-steps {
+                display: none;
+            }
+
+            .intro-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .intro-title {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Intro Screen -->
+        <div class="intro-screen" id="introScreen">
+            <div class="intro-content">
+                <h1 class="intro-title">Sarah Chen's Journey</h1>
+                <p class="intro-subtitle">
+                    Watch how LeadPulseAI transforms a cold lead into a<br>
+                    $63,000 lifetime value customer in just 23 days
+                </p>
+
+                <div class="intro-stats">
+                    <div class="intro-stat">
+                        <div class="intro-stat-value">$45M</div>
+                        <div class="intro-stat-label">Annual Problem</div>
+                    </div>
+                    <div class="intro-stat">
+                        <div class="intro-stat-value">68%</div>
+                        <div class="intro-stat-label">Lead Leakage</div>
+                    </div>
+                    <div class="intro-stat">
+                        <div class="intro-stat-value">$159M</div>
+                        <div class="intro-stat-label">Year 1 Solution</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-lg" onclick="startDemo()" style="padding: var(--space-lg) var(--space-2xl); font-size: 18px;">
+                    ▶️ Start Interactive Demo
+                </button>
+
+                <p style="margin-top: var(--space-lg); font-size: 14px; opacity: 0.7;">
+                    Duration: ~7 minutes | Auto-play with narration
+                </p>
+            </div>
+        </div>
+
+        <!-- Demo Header -->
+        <div class="demo-header" style="display: none;" id="demoHeader">
+            <div class="demo-title">
+                <span>🎬</span>
+                <span>Interactive Demo: Sarah Chen's Journey</span>
+            </div>
+            <div class="demo-controls">
+                <button class="btn btn-success" id="playBtn" onclick="playDemo()">▶️ Play</button>
+                <button class="btn btn-secondary" id="pauseBtn" onclick="pauseDemo()" style="display: none;">⏸️ Pause</button>
+                <button class="btn btn-ghost" onclick="exitDemo()">❌ Exit</button>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="demo-progress-bar" style="display: none;" id="progressBar">
+            <div class="demo-progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Steps -->
+        <div class="demo-steps" style="display: none;" id="demoSteps">
+            <div class="step active" data-step="1">1. Introduction</div>
+            <div class="step" data-step="2">2. Trigger Detection</div>
+            <div class="step" data-step="3">3. First AI Call</div>
+            <div class="step" data-step="4">4. Nurturing Sequence</div>
+            <div class="step" data-step="5">5. Agent Handoff</div>
+            <div class="step" data-step="6">6. Conversion & ROI</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="demo-content" style="display: none;" id="demoContent">
+            <iframe class="demo-frame" id="demoFrame" src="dashboard.html"></iframe>
+
+            <!-- Narration Overlay -->
+            <div class="demo-narration" id="narration" style="display: none;">
+                <div class="narration-text" id="narrationText"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        let currentStep = 0;
+        let isPaused = false;
+        let demoTimeout;
+
+        const demoScript = [
+            {
+                step: 1,
+                title: "Introduction",
+                page: "dashboard.html",
+                duration: 10000,
+                narration: "Meet AIA Singapore. They're losing $45-60 million annually because 68% of qualified leads go cold during nurturing. Let me show you how LeadPulseAI solves this...",
+                progress: 0
+            },
+            {
+                step: 2,
+                title: "Trigger Detection",
+                page: "dashboard.html",
+                duration: 15000,
+                narration: "This is Sarah Chen. She just announced her pregnancy on social media. Within 6 hours, LeadPulseAI's trigger detection system identifies this as a high-intent life event and automatically schedules a personalized outreach call. The critical 72-hour window starts NOW.",
+                progress: 16
+            },
+            {
+                step: 3,
+                title: "First AI Call",
+                page: "calling.html",
+                duration: 90000,
+                narration: "Watch Emma, our AI agent, make the first call. Notice how she builds rapport, identifies Sarah's needs, and adapts in real-time based on sentiment analysis. This conversation is happening autonomously - no human intervention needed.",
+                progress: 33
+            },
+            {
+                step: 4,
+                title: "Nurturing Sequence",
+                page: "lead-profile.html?id=LC-2025-8472",
+                duration: 30000,
+                narration: "Over the next 23 days, AI maintains 8 touchpoints with Sarah - calls, emails, SMS. Each interaction builds trust, addresses objections, and moves her closer to conversion. Notice how the conversion probability increases from 32% to 75%.",
+                progress: 50
+            },
+            {
+                step: 5,
+                title: "Agent Handoff",
+                page: "lead-profile.html?id=LC-2025-8472",
+                duration: 20000,
+                narration: "When Sarah is sales-ready, AI hands her to Rachel Tan - a human agent - with complete context: conversation history, behavioral insights, and recommended approach. Rachel doesn't waste time qualifying. She closes the deal.",
+                progress: 66
+            },
+            {
+                step: 6,
+                title: "Conversion & ROI",
+                page: "analytics.html",
+                duration: 25000,
+                narration: "Sarah converts to a $63,000 lifetime value customer. Now multiply this by thousands of leads. The result? $159 million in Year 1 revenue impact on a $2.45 million investment. That's a 6,400% ROI. This is the future of insurance.",
+                progress: 83
+            }
+        ];
+
+        function startDemo() {
+            // Hide intro, show demo
+            document.getElementById('introScreen').style.display = 'none';
+            document.getElementById('demoHeader').style.display = 'flex';
+            document.getElementById('progressBar').style.display = 'block';
+            document.getElementById('demoSteps').style.display = 'flex';
+            document.getElementById('demoContent').style.display = 'block';
+
+            // Start playing
+            currentStep = 0;
+            playDemo();
+        }
+
+        function playDemo() {
+            if (currentStep >= demoScript.length) {
+                endDemo();
+                return;
+            }
+
+            // Update UI
+            document.getElementById('playBtn').style.display = 'none';
+            document.getElementById('pauseBtn').style.display = 'inline-flex';
+
+            executeStep();
+        }
+
+        function executeStep() {
+            if (currentStep >= demoScript.length) {
+                endDemo();
+                return;
+            }
+
+            const step = demoScript[currentStep];
+
+            // Update steps UI
+            document.querySelectorAll('.step').forEach((el, idx) => {
+                el.classList.remove('active', 'completed');
+                if (idx < currentStep) {
+                    el.classList.add('completed');
+                } else if (idx === currentStep) {
+                    el.classList.add('active');
+                }
+            });
+
+            // Update progress bar
+            document.getElementById('progressFill').style.width = step.progress + '%';
+
+            // Navigate to page
+            document.getElementById('demoFrame').src = step.page;
+
+            // Show narration
+            showNarration(step.narration);
+
+            // Speak narration (optional)
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(step.narration);
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                speechSynthesis.speak(utterance);
+            }
+
+            // Schedule next step
+            demoTimeout = setTimeout(() => {
+                if (!isPaused) {
+                    currentStep++;
+                    executeStep();
+                }
+            }, step.duration);
+        }
+
+        function showNarration(text) {
+            const narration = document.getElementById('narration');
+            const narrationText = document.getElementById('narrationText');
+
+            narrationText.textContent = text;
+            narration.style.display = 'block';
+
+            // Hide after showing for most of the duration
+            setTimeout(() => {
+                narration.style.display = 'none';
+            }, demoScript[currentStep].duration - 3000);
+        }
+
+        function pauseDemo() {
+            isPaused = true;
+            clearTimeout(demoTimeout);
+            speechSynthesis.pause();
+
+            document.getElementById('playBtn').style.display = 'inline-flex';
+            document.getElementById('pauseBtn').style.display = 'none';
+        }
+
+        function resumeDemo() {
+            isPaused = false;
+            speechSynthesis.resume();
+            playDemo();
+        }
+
+        function exitDemo() {
+            if (confirm('Are you sure you want to exit the demo?')) {
+                speechSynthesis.cancel();
+                clearTimeout(demoTimeout);
+                window.location.href = 'index.html';
+            }
+        }
+
+        function endDemo() {
+            // Update progress to 100%
+            document.getElementById('progressFill').style.width = '100%';
+
+            // Mark all steps as completed
+            document.querySelectorAll('.step').forEach(el => {
+                el.classList.remove('active');
+                el.classList.add('completed');
+            });
+
+            // Show completion message
+            const narration = document.getElementById('narration');
+            const narrationText = document.getElementById('narrationText');
+
+            narrationText.innerHTML = `
+                <div style="font-size: 24px; font-weight: 700; margin-bottom: var(--space-md);">
+                    🎉 Demo Complete!
+                </div>
+                <div style="margin-bottom: var(--space-lg);">
+                    You've just witnessed how LeadPulseAI transforms insurance lead nurturing.
+                    Sarah Chen went from cold lead to $63,000 customer in 23 days.
+                </div>
+                <div style="display: flex; gap: var(--space-md); justify-content: center;">
+                    <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">
+                        Explore Dashboard
+                    </button>
+                    <button class="btn btn-secondary" onclick="currentStep = 0; playDemo();">
+                        🔄 Replay Demo
+                    </button>
+                    <button class="btn btn-ghost" onclick="window.location.href='index.html'">
+                        ← Back to Home
+                    </button>
+                </div>
+            `;
+
+            narration.style.display = 'block';
+
+            // Update controls
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('playBtn').style.display = 'none';
+        }
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (isPaused) {
+                    resumeDemo();
+                } else {
+                    pauseDemo();
+                }
+            } else if (e.code === 'Escape') {
+                exitDemo();
+            } else if (e.code === 'ArrowRight') {
+                // Skip to next step
+                clearTimeout(demoTimeout);
+                currentStep++;
+                executeStep();
+            }
+        });
+
+        // Load voices for speech synthesis
+        if ('speechSynthesis' in window) {
+            speechSynthesis.getVoices();
+        }
+    </script>
+</body>
+</html>

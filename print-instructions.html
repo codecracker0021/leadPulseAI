@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Conversion Instructions</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: #f5f7fa;
+            line-height: 1.6;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #1e293b;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .method {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        .steps {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .step {
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .step::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .important {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #f59e0b;
+            margin: 15px 0;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        code {
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>📄 How to Convert Your Presentation to PDF</h1>
+        <p style="color: #64748b; font-size: 16px;">Follow these simple steps to create a high-quality PDF that preserves all colors, gradients, and layouts.</p>
+
+        <div class="method">
+            <h2>🖨️ Recommended Method: Browser Print-to-PDF</h2>
+
+            <div class="steps">
+                <div class="step">
+                    <strong>Open the presentation</strong><br>
+                    Double-click on <code>presentation-journey.html</code> to open it in your default browser
+                </div>
+
+                <div class="step">
+                    <strong>Open Print Dialog</strong><br>
+                    Press <code>Cmd + P</code> (Mac) or <code>Ctrl + P</code> (Windows/Linux)
+                </div>
+
+                <div class="step">
+                    <strong>Configure Print Settings:</strong><br>
+                    • <strong>Destination:</strong> Save as PDF<br>
+                    • <strong>Layout:</strong> Landscape<br>
+                    • <strong>Paper size:</strong> A4 or Letter<br>
+                    • <strong>Margins:</strong> None or Minimum<br>
+                    • <strong>Scale:</strong> 100% (Default)
+                </div>
+
+                <div class="important">
+                    <strong>⚠️ CRITICAL SETTING:</strong><br>
+                    Make sure <strong>"Background graphics"</strong> or <strong>"Print backgrounds"</strong> is <strong>ENABLED</strong>.<br>
+                    Without this, you'll lose all the beautiful gradients and colors!
+                </div>
+
+                <div class="step">
+                    <strong>Save the PDF</strong><br>
+                    Click "Save" or "Print" and choose your desired location<br>
+                    Suggested filename: <code>LeadPulseAI-Presentation.pdf</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="method">
+            <h2>🎯 Alternative Method: Chrome DevTools</h2>
+
+            <div class="steps">
+                <div class="step">
+                    Open the presentation in <strong>Google Chrome</strong>
+                </div>
+
+                <div class="step">
+                    Press <code>F12</code> to open DevTools, then press <code>Cmd+Shift+P</code> (Mac) or <code>Ctrl+Shift+P</code> (Windows)
+                </div>
+
+                <div class="step">
+                    Type <code>pdf</code> and select <strong>"Print to PDF"</strong>
+                </div>
+
+                <div class="step">
+                    This will automatically include backgrounds and use optimal settings
+                </div>
+            </div>
+        </div>
+
+        <div class="method">
+            <h2>💡 Tips for Best Results</h2>
+
+            <div class="step">
+                <strong>Use Chrome or Edge</strong> for most consistent results
+            </div>
+
+            <div class="step">
+                <strong>Full-screen the browser</strong> before printing for better slide proportions
+            </div>
+
+            <div class="step">
+                <strong>Preview first:</strong> Check the print preview to ensure everything looks correct
+            </div>
+
+            <div class="step">
+                <strong>One slide per page:</strong> The presentation is designed to automatically break at slide boundaries
+            </div>
+        </div>
+
+        <a href="presentation-journey.html" class="button">🚀 Open Presentation Now</a>
+
+        <p style="margin-top: 40px; color: #94a3b8; font-size: 14px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            The PDF will include all 19 slides with full colors, gradients, research citations, and the new Impact Analysis slide.
+        </p>
+    </div>
+</body>
+</html>

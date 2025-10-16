@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadPulseAI - Executive Presentation</title>
+    <style>
+        /* ==================== GLOBAL STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            background: #f5f7fa;
+        }
+
+        /* ==================== NAVIGATION ==================== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 40px;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-dots {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-dot.active {
+            background: #667eea;
+            transform: scale(1.3);
+        }
+
+        /* ==================== SLIDE CONTAINER ==================== */
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 40px 60px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* ==================== SLIDE BACKGROUNDS ==================== */
+        .slide-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .slide-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .slide-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .slide-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .slide-5 { background: #ffffff; }
+        .slide-6 { background: #f8f9fa; }
+        .slide-7 { background: #ffffff; }
+        .slide-8 { background: #f8f9fa; }
+        .slide-9 { background: #ffffff; }
+        .slide-10 { background: #f8f9fa; }
+        .slide-11 { background: #ffffff; }
+        .slide-12 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+        /* ==================== TITLE SLIDE ==================== */
+        .title-slide {
+            text-align: center;
+            color: white;
+        }
+
+        .title-slide h1 {
+            font-size: 72px;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .title-slide .subtitle {
+            font-size: 32px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .title-slide .tagline {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card .number {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* ==================== CONTENT SLIDES ==================== */
+        .content-slide h2 {
+            font-size: 48px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .content-slide.white-bg h2 {
+            color: #1e293b;
+        }
+
+        .content-slide.colored-bg h2 {
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ==================== PROBLEM CARDS ==================== */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .problem-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .problem-card .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .problem-card h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .problem-card .impact {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin: 20px 0;
+        }
+
+        /* ==================== FEATURE CARDS ==================== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* ==================== SCREENSHOT SLIDES ==================== */
+        .screenshot-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .screenshot-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .screenshot-header h3 {
+            font-size: 32px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .screenshot-header p {
+            color: #64748b;
+            font-size: 18px;
+        }
+
+        .mockup {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dashboard Mockup */
+        .dashboard-mockup {
+            background: #f8f9fa;
+            padding: 30px;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-card .metric-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .dashboard-card .metric-label {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .dashboard-card .metric-change {
+            color: #10b981;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Lead Card Mockup */
+        .lead-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .lead-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #667eea;
+        }
+
+        .lead-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .lead-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .lead-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-hot {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-diamond {
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            color: white;
+        }
+
+        .lead-info {
+            margin-top: 15px;
+        }
+
+        .lead-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .lead-info-label {
+            color: #64748b;
+        }
+
+        .lead-info-value {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        /* Phone Mockup */
+        .phone-mockup {
+            width: 320px;
+            height: 640px;
+            background: #1e293b;
+            border-radius: 40px;
+            padding: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .phone-notch {
+            width: 150px;
+            height: 25px;
+            background: #1e293b;
+            border-radius: 0 0 20px 20px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .phone-content {
+            padding: 20px;
+        }
+
+        /* ==================== COMPARISON TABLE ==================== */
+        .comparison-table {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table .metric {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .comparison-table .before {
+            color: #ef4444;
+        }
+
+        .comparison-table .after {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        /* ==================== TIMELINE ==================== */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-marker {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            border: 5px solid #f8f9fa;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .timeline-title {
+            font-size: 22px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .timeline-description {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* ==================== ROI SECTION ==================== */
+        .roi-container {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .roi-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .roi-number {
+            font-size: 96px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .roi-label {
+            font-size: 24px;
+            color: #64748b;
+        }
+
+        .roi-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .roi-item {
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .roi-item-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+
+        .roi-item-label {
+            color: #64748b;
+        }
+
+        /* ==================== CTA SLIDE ==================== */
+        .cta-slide {
+            text-align: center;
+            color: white;
+        }
+
+        .cta-slide h2 {
+            font-size: 56px;
+            margin-bottom: 30px;
+        }
+
+        .cta-slide p {
+            font-size: 24px;
+            margin-bottom: 50px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .cta-button {
+            padding: 20px 50px;
+            font-size: 20px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .cta-button-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 968px) {
+            .stats-grid,
+            .problem-grid,
+            .feature-grid,
+            .dashboard-grid,
+            .lead-cards,
+            .roi-breakdown {
+                grid-template-columns: 1fr;
+            }
+
+            .title-slide h1 {
+                font-size: 48px;
+            }
+
+            .title-slide .subtitle {
+                font-size: 24px;
+            }
+
+            .content-slide h2 {
+                font-size: 36px;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                padding-left: 60px;
+            }
+
+            .timeline-item:nth-child(even) {
+                flex-direction: column;
+            }
+
+            .timeline-marker {
+                left: 30px;
+            }
+        }
+
+        /* ==================== PRINT STYLES ==================== */
+        @media print {
+            .nav {
+                display: none;
+            }
+
+            .slide {
+                page-break-after: always;
+                min-height: auto;
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>🎯</span>
+                <span>LeadPulseAI</span>
+            </div>
+            <div class="nav-dots">
+                <div class="nav-dot active" onclick="scrollToSlide(0)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(1)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(2)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(3)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(4)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(5)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(6)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(7)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(8)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(9)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(10)"></div>
+                <div class="nav-dot" onclick="scrollToSlide(11)"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Slide 1: Title -->
+    <section class="slide slide-1" id="slide-0">
+        <div class="slide-content title-slide">
+            <h1>🎯 LeadPulseAI</h1>
+            <div class="subtitle">Transform Insurance Lead Nurturing with AI</div>
+            <div class="tagline">
+                Stop losing qualified leads to slow response times. LeadPulseAI delivers 24/7 AI-powered engagement
+                that converts 3x faster than traditional methods.
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number">+167%</div>
+                    <div class="label">Conversion Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">-99%</div>
+                    <div class="label">Response Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">$3.86M</div>
+                    <div class="label">Revenue Generated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">24/7</div>
+                    <div class="label">AI Availability</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 2: Problem Statement -->
+    <section class="slide slide-2" id="slide-1">
+        <div class="slide-content content-slide colored-bg">
+            <h2>The $60M Problem</h2>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="icon">⏰</div>
+                    <h3>Slow Response Times</h3>
+                    <p>Traditional call centers respond in 24-48 hours. By then, 68% of leads have already moved on to competitors.</p>
+                    <div class="impact">-$45M annually</div>
+                </div>
+                <div class="problem-card">
+                    <div class="icon">🔥</div>
+                    <h3>Critical 72-Hour Window</h3>
+                    <p>Life events like pregnancy or property purchase have a 72-hour engagement window. Missing it means losing the lead forever.</p>
+                    <div class="impact">68% leads go cold</div>
+                </div>
+                <div class="problem-card">
+                    <div class="icon">📞</div>
+                    <h3>Limited Agent Capacity</h3>
+                    <p>Human agents can only handle 8-12 calls per day. With 500+ daily leads, 80% get no follow-up.</p>
+                    <div class="impact">400 leads/day ignored</div>
+                </div>
+                <div class="problem-card">
+                    <div class="icon">📊</div>
+                    <h3>No Personalization</h3>
+                    <p>Generic scripts don't address individual needs. Pregnancy leads get the same pitch as retirees.</p>
+                    <div class="impact">32% conversion rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: Solution Overview -->
+    <section class="slide slide-3" id="slide-2">
+        <div class="slide-content content-slide colored-bg">
+            <h2>The LeadPulseAI Solution</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">🤖</div>
+                    <h3>AI Voice Agents</h3>
+                    <p>Natural-sounding AI conducts personalized calls in multiple languages, handling 500+ simultaneous conversations with 98% satisfaction.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h3>Trigger Detection</h3>
+                    <p>Automatically identifies life events from social media, property records, and hospital partnerships. Engages within 6 hours.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🎯</div>
+                    <h3>Smart Campaigns</h3>
+                    <p>Event-driven nurture sequences with 12 touchpoints over 90 days. Pregnancy, birthday, property purchase campaigns included.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📈</div>
+                    <h3>Complete Lifecycle</h3>
+                    <p>From first contact to loyal customer. Post-purchase onboarding, retention, and upsell campaigns maximize LTV.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🧠</div>
+                    <h3>Real-Time Intelligence</h3>
+                    <p>Live sentiment analysis, objection detection, and AI coaching. Know exactly when to have a human agent join the call.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>Analytics & ROI</h3>
+                    <p>Track every metric: conversion rates, revenue per campaign, objection patterns, and agent performance. Prove ROI instantly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 4: Executive Summary -->
+    <section class="slide slide-4" id="slide-3">
+        <div class="slide-content content-slide colored-bg">
+            <h2>Executive Summary</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number">78%</div>
+                    <div class="label">Response Rate<br>(vs 20% industry avg)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">&lt;2min</div>
+                    <div class="label">Avg Response Time<br>(was 24-48 hours)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">85%</div>
+                    <div class="label">Conversion Rate<br>(was 32%)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">$95K</div>
+                    <div class="label">Avg Customer LTV<br>(+$32K from upsells)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">347</div>
+                    <div class="label">Leads Nurtured<br>in Pregnancy Campaign</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">$1.2M</div>
+                    <div class="label">Revenue Generated<br>(Single Campaign)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">892</div>
+                    <div class="label">AI Calls Completed<br>(Across All Campaigns)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">25.6%</div>
+                    <div class="label">Campaign Conversion<br>(Industry: 8-12%)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: Screenshot - Dashboard -->
+    <section class="slide slide-5" id="slide-4">
+        <div class="slide-content content-slide white-bg">
+            <h2>📊 Dashboard Overview</h2>
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <h3>Real-Time Performance Metrics</h3>
+                    <p>Monitor all campaigns, leads, and AI agents from a single dashboard</p>
+                </div>
+                <div class="mockup dashboard-mockup">
+                    <div class="dashboard-header">
+                        <div>
+                            <div style="font-size: 24px; font-weight: 700;">Welcome back, Manager</div>
+                            <div style="opacity: 0.9;">Today's Performance</div>
+                        </div>
+                        <div style="font-size: 14px;">
+                            <div>🔴 47 Active Calls</div>
+                            <div>⏰ Oct 16, 2025 • 2:45 PM</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="metric-value">892</div>
+                            <div class="metric-label">Total Calls Today</div>
+                            <div class="metric-change">↗️ +23% vs yesterday</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="metric-value">$3.86M</div>
+                            <div class="metric-label">Revenue This Month</div>
+                            <div class="metric-change">↗️ +$850K vs last month</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="metric-value">78%</div>
+                            <div class="metric-label">Response Rate</div>
+                            <div class="metric-change">↗️ +12% improvement</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="metric-value">85%</div>
+                            <div class="metric-label">Conversion Rate</div>
+                            <div class="metric-change">↗️ Industry: 32%</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="metric-value">347</div>
+                            <div class="metric-label">Active Leads</div>
+                            <div class="metric-change">🔥 247 Hot Leads</div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="metric-value">6</div>
+                            <div class="metric-label">Active Campaigns</div>
+                            <div class="metric-change">✅ All performing well</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 6: Screenshot - Lead Cards -->
+    <section class="slide slide-6" id="slide-5">
+        <div class="slide-content content-slide white-bg">
+            <h2>👥 AI-Powered Lead Intelligence</h2>
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <h3>Comprehensive Lead Profiles</h3>
+                    <p>Every lead gets personalized AI analysis and nurture strategy</p>
+                </div>
+                <div class="mockup">
+                    <div class="lead-cards">
+                        <div class="lead-card">
+                            <div class="lead-card-header">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div class="lead-avatar">SC</div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 18px; color: #1e293b;">Sarah Chen</div>
+                                        <div style="font-size: 14px; color: #64748b;">Expecting • Age 32</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
+                                    <div class="lead-badge badge-hot">🔥 HOT</div>
+                                    <div class="lead-badge badge-diamond">💎 DIAMOND</div>
+                                </div>
+                            </div>
+                            <div class="lead-info">
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Lead Score:</span>
+                                    <span class="lead-info-value">95/100</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Conversion Prob:</span>
+                                    <span class="lead-info-value">85%</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Est. LTV:</span>
+                                    <span class="lead-info-value">$95,000</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Trigger Event:</span>
+                                    <span class="lead-info-value">Pregnancy Detected</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Campaign:</span>
+                                    <span class="lead-info-value">Pregnancy Nurture</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Last Contact:</span>
+                                    <span class="lead-info-value">2 hours ago (AI Call)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lead-card">
+                            <div class="lead-card-header">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div class="lead-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">MT</div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 18px; color: #1e293b;">Michael Tan</div>
+                                        <div style="font-size: 14px; color: #64748b;">Software Engineer • Age 28</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
+                                    <div class="lead-badge" style="background: #dbeafe; color: #1e40af;">🎯 ENGAGED</div>
+                                    <div class="lead-badge" style="background: #fef3c7; color: #92400e;">🥇 GOLD</div>
+                                </div>
+                            </div>
+                            <div class="lead-info">
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Lead Score:</span>
+                                    <span class="lead-info-value">82/100</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Conversion Prob:</span>
+                                    <span class="lead-info-value">78%</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Est. LTV:</span>
+                                    <span class="lead-info-value">$52,000</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Trigger Event:</span>
+                                    <span class="lead-info-value">Career Milestone</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Campaign:</span>
+                                    <span class="lead-info-value">Young Professional</span>
+                                </div>
+                                <div class="lead-info-row">
+                                    <span class="lead-info-label">Last Contact:</span>
+                                    <span class="lead-info-value">Yesterday (AI Call - 12 min)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 7: Screenshot - AI Calling Center -->
+    <section class="slide slide-7" id="slide-6">
+        <div class="slide-content content-slide white-bg">
+            <h2>🤖 Live AI Calling Center</h2>
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <h3>Watch AI Agents in Real-Time</h3>
+                    <p>Live transcript, sentiment analysis, and coaching suggestions</p>
+                </div>
+                <div class="mockup dashboard-mockup">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
+                        <div style="font-size: 14px; margin-bottom: 10px;">🔴 LIVE CALL IN PROGRESS</div>
+                        <div style="font-size: 28px; font-weight: 700; margin-bottom: 5px;">Sarah Chen - Maternity Coverage Discussion</div>
+                        <div style="font-size: 16px;">Call Duration: 00:03:42</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 20px;">
+                        <div style="background: white; padding: 20px; border-radius: 12px; border: 2px solid #e2e8f0;">
+                            <div style="font-weight: 700; margin-bottom: 15px; color: #1e293b;">📄 Live Transcript</div>
+                            <div style="font-size: 14px; line-height: 1.8; color: #64748b;">
+                                <div style="margin-bottom: 12px;">
+                                    <div style="color: #667eea; font-weight: 600;">[00:03:22] Emma (AI Agent):</div>
+                                    <div>That's a great question! The maternity coverage includes all delivery costs up to $25,000, plus newborn care from day one...</div>
+                                </div>
+                                <div style="margin-bottom: 12px;">
+                                    <div style="color: #f5576c; font-weight: 600;">[00:03:35] Sarah Chen:</div>
+                                    <div>That sounds comprehensive. What about complications?</div>
+                                </div>
+                                <div>
+                                    <div style="color: #667eea; font-weight: 600;">[00:03:40] Emma (AI Agent):</div>
+                                    <div>Excellent question! All pregnancy complications are fully covered...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="background: white; padding: 20px; border-radius: 12px; border: 2px solid #e2e8f0; margin-bottom: 15px;">
+                                <div style="font-weight: 700; margin-bottom: 10px; color: #1e293b;">🧠 Real-Time Intelligence</div>
+                                <div style="font-size: 13px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span>Sentiment:</span>
+                                        <span style="color: #10b981; font-weight: 600;">😊 8.2/10</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span>Intent:</span>
+                                        <span style="font-weight: 600;">High - Seeking Info</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span>Engagement:</span>
+                                        <span style="color: #10b981; font-weight: 600;">Strong</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>Conversion:</span>
+                                        <span style="color: #10b981; font-weight: 600;">75% (+5%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="background: #fef3c7; padding: 15px; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                                <div style="font-weight: 700; margin-bottom: 8px; color: #92400e;">💡 AI Coaching</div>
+                                <div style="font-size: 13px; color: #78350f;">
+                                    Customer asking detailed questions - high intent signal. Continue education tone, then pivot to scheduling specialist consultation.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 8: Screenshot - Call Summary -->
+    <section class="slide slide-8" id="slide-7">
+        <div class="slide-content content-slide white-bg">
+            <h2>📊 Post-Call Intelligence</h2>
+            <div class="screenshot-container">
+                <div class="screenshot-header">
+                    <h3>Automatic Call Analysis & Summary</h3>
+                    <p>Every call generates actionable insights for agents</p>
+                </div>
+                <div class="mockup dashboard-mockup">
+                    <div style="background: white; padding: 30px; border-radius: 12px; border: 2px solid #e2e8f0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #e2e8f0;">
+                            <div>
+                                <div style="font-size: 28px; font-weight: 700; color: #1e293b; margin-bottom: 5px;">📊 CALL SUMMARY</div>
+                                <div style="color: #64748b;">Completed in 3:42 • AI-powered conversation</div>
+                            </div>
+                            <div style="background: #10b981; color: white; padding: 10px 20px; border-radius: 25px; font-weight: 700;">
+                                ✅ APPOINTMENT SCHEDULED
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                                <div style="font-size: 36px; font-weight: 700; color: #10b981; margin-bottom: 5px;">85%</div>
+                                <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Conversion Probability</div>
+                                <div style="font-size: 12px; color: #10b981; margin-top: 5px;">↗️ +15% from start</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                                <div style="font-size: 36px; font-weight: 700; color: #10b981; margin-bottom: 5px;">8.5/10</div>
+                                <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Final Sentiment</div>
+                                <div style="font-size: 12px; color: #10b981; margin-top: 5px;">😊 Excellent</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                                <div style="font-size: 36px; font-weight: 700; color: #667eea; margin-bottom: 5px;">2</div>
+                                <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Objections Handled</div>
+                                <div style="font-size: 12px; color: #667eea; margin-top: 5px;">✅ All resolved</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 25px;">
+                            <div style="font-weight: 700; margin-bottom: 12px; color: #1e293b; font-size: 13px; text-transform: uppercase;">🎯 KEY MOMENTS</div>
+                            <div style="padding: 12px; margin-bottom: 8px; background: rgba(147, 51, 234, 0.05); border-left: 3px solid #667eea; border-radius: 8px; font-size: 13px;">
+                                <span style="color: #667eea; font-weight: 600; font-family: monospace;">00:45</span> - Price objection handled successfully with monthly breakdown
+                            </div>
+                            <div style="padding: 12px; margin-bottom: 8px; background: rgba(147, 51, 234, 0.05); border-left: 3px solid #667eea; border-radius: 8px; font-size: 13px;">
+                                <span style="color: #667eea; font-weight: 600; font-family: monospace;">01:30</span> - Customer shared pregnancy timeline (due March 2026)
+                            </div>
+                            <div style="padding: 12px; background: rgba(147, 51, 234, 0.05); border-left: 3px solid #667eea; border-radius: 8px; font-size: 13px;">
+                                <span style="color: #667eea; font-weight: 600; font-family: monospace;">03:20</span> - Appointment confirmed for Oct 12, 2PM with Rachel Tan
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="font-weight: 700; margin-bottom: 12px; color: #1e293b; font-size: 13px; text-transform: uppercase;">📋 NEXT STEPS</div>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; font-size: 13px; color: #10b981;">
+                                <span>✅</span>
+                                <span style="flex: 1;">Send confirmation email with meeting details</span>
+                                <span style="font-size: 11px;">(Completed)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; font-size: 13px; color: #10b981;">
+                                <span>✅</span>
+                                <span style="flex: 1;">Send quote breakdown PDF</span>
+                                <span style="font-size: 11px;">(Completed)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; font-size: 13px; color: #f59e0b;">
+                                <span>→</span>
+                                <span style="flex: 1;">Human follow-up call 24h before appointment</span>
+                                <span style="font-size: 11px;">(Pending)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 9: Before/After Comparison -->
+    <section class="slide slide-9" id="slide-8">
+        <div class="slide-content content-slide white-bg">
+            <h2>📈 Impact Analysis</h2>
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Before LeadPulseAI</th>
+                            <th>After LeadPulseAI</th>
+                            <th>Improvement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="metric">Response Time</td>
+                            <td class="before">24-48 hours</td>
+                            <td class="after">&lt;2 minutes</td>
+                            <td class="after">-99%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric">Response Rate</td>
+                            <td class="before">20%</td>
+                            <td class="after">78%</td>
+                            <td class="after">+290%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric">Conversion Rate</td>
+                            <td class="before">32%</td>
+                            <td class="after">85%</td>
+                            <td class="after">+167%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric">Agent Capacity</td>
+                            <td class="before">8-12 calls/day</td>
+                            <td class="after">500+ simultaneous</td>
+                            <td class="after">+4000%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric">Average LTV</td>
+                            <td class="before">$63,000</td>
+                            <td class="after">$95,000</td>
+                            <td class="after">+51%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric">Cost per Lead</td>
+                            <td class="before">$180</td>
+                            <td class="after">$45</td>
+                            <td class="after">-75%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric">Customer Satisfaction</td>
+                            <td class="before">72%</td>
+                            <td class="after">96%</td>
+                            <td class="after">+33%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric">Monthly Revenue</td>
+                            <td class="before">$1.2M</td>
+                            <td class="after">$3.86M</td>
+                            <td class="after">+222%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 10: ROI -->
+    <section class="slide slide-10" id="slide-9">
+        <div class="slide-content content-slide white-bg">
+            <h2>💰 Return on Investment</h2>
+            <div class="roi-container">
+                <div class="roi-header">
+                    <div class="roi-number">428%</div>
+                    <div class="roi-label">ROI in First 12 Months</div>
+                </div>
+                <div class="roi-breakdown">
+                    <div class="roi-item">
+                        <div class="roi-item-value">$3.86M</div>
+                        <div class="roi-item-label">Additional Revenue Generated</div>
+                    </div>
+                    <div class="roi-item">
+                        <div class="roi-item-value">$2.1M</div>
+                        <div class="roi-item-label">Cost Savings (Agent Reduction)</div>
+                    </div>
+                    <div class="roi-item">
+                        <div class="roi-item-value">$900K</div>
+                        <div class="roi-item-label">Upsell Revenue (Post-Purchase Nurturing)</div>
+                    </div>
+                    <div class="roi-item">
+                        <div class="roi-item-value">$1.4M</div>
+                        <div class="roi-item-label">Recovered Lost Leads (68% → 22% Cold Rate)</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px;">
+                    <div style="font-size: 24px; font-weight: 700; margin-bottom: 10px;">Total Impact: $8.26M Annually</div>
+                    <div style="font-size: 18px; opacity: 0.9;">Implementation Cost: $1.5M • Payback Period: 2.2 Months</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 11: Roadmap -->
+    <section class="slide slide-11" id="slide-10">
+        <div class="slide-content content-slide white-bg">
+            <h2>🗺️ Implementation Roadmap</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">PHASE 1 • Weeks 1-4</div>
+                        <div class="timeline-title">Foundation & Integration</div>
+                        <div class="timeline-description">
+                            • CRM integration (Salesforce, HubSpot)<br>
+                            • Trigger detection setup (social media, property records)<br>
+                            • AI voice agent training on existing scripts<br>
+                            • Campaign builder configuration
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">PHASE 2 • Weeks 5-8</div>
+                        <div class="timeline-title">Pilot Campaign Launch</div>
+                        <div class="timeline-description">
+                            • Launch Pregnancy Nurture Campaign (100 leads)<br>
+                            • A/B test AI vs human scripts<br>
+                            • Monitor metrics and gather feedback<br>
+                            • Train 10 agents on new platform
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">PHASE 3 • Weeks 9-16</div>
+                        <div class="timeline-title">Full Rollout</div>
+                        <div class="timeline-description">
+                            • Launch all 6 campaigns (Pregnancy, Birthday, Property, etc.)<br>
+                            • Scale to 500+ daily leads<br>
+                            • Deploy post-purchase nurturing sequences<br>
+                            • Full team training (50 agents)
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">PHASE 4 • Weeks 17-20</div>
+                        <div class="timeline-title">Optimization & Expansion</div>
+                        <div class="timeline-description">
+                            • Launch multi-language support (Mandarin, Malay)<br>
+                            • Integrate WhatsApp and SMS channels<br>
+                            • Deploy advanced analytics dashboard<br>
+                            • Implement predictive lead scoring 2.0
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">PHASE 5 • Weeks 21+</div>
+                        <div class="timeline-title">Continuous Improvement</div>
+                        <div class="timeline-description">
+                            • Monthly campaign performance reviews<br>
+                            • AI model retraining based on outcomes<br>
+                            • New campaign creation based on market trends<br>
+                            • Expansion to new insurance products
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 12: Call to Action -->
+    <section class="slide slide-12" id="slide-11">
+        <div class="slide-content cta-slide">
+            <h2>Ready to Transform Your Lead Nurturing?</h2>
+            <p>Join the AI revolution in insurance sales. Start converting 3x faster today.</p>
+            <div class="cta-buttons">
+                <button class="cta-button cta-button-primary">Approve $1.5M Investment</button>
+                <button class="cta-button cta-button-secondary">Schedule Pilot Program</button>
+            </div>
+            <div style="margin-top: 60px; font-size: 18px; opacity: 0.9;">
+                <div style="margin-bottom: 20px;">📧 contact@leadpulseai.com</div>
+                <div>🌐 www.leadpulseai.com</div>
+            </div>
+            <div style="margin-top: 80px; font-size: 16px; opacity: 0.8;">
+                LeadPulseAI • Confidential Executive Presentation • October 2025
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navigation dots
+        function scrollToSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            slides[index].scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update active dot on scroll
+        window.addEventListener('scroll', () => {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.nav-dot');
+
+            slides.forEach((slide, index) => {
+                const rect = slide.getBoundingClientRect();
+                if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    dots[index].classList.add('active');
+                }
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const slides = document.querySelectorAll('.slide');
+            const currentSlide = Array.from(slides).findIndex(slide => {
+                const rect = slide.getBoundingClientRect();
+                return rect.top >= 0 && rect.top < window.innerHeight / 2;
+            });
+
+            if (e.key === 'ArrowDown' && currentSlide < slides.length - 1) {
+                scrollToSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowUp' && currentSlide > 0) {
+                scrollToSlide(currentSlide - 1);
+            }
+        });
+
+        // CTA Button Actions
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('Thank you for your interest! Our team will contact you within 24 hours.');
+            });
+        });
+    </script>
+</body>
+</html>

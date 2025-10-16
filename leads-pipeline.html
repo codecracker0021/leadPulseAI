@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leads Pipeline - LeadPulseAI</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 70px 1fr;
+            height: 100vh;
+            background: var(--background);
+        }
+
+        .top-nav {
+            grid-column: 1 / -1;
+            background: white;
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar {
+            background: var(--navy-blue);
+            color: white;
+            padding: var(--space-lg);
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            margin-bottom: var(--space-sm);
+            font-size: 14px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            background: var(--aia-red);
+            color: white;
+        }
+
+        .nav-item.demo {
+            background: var(--ai-purple);
+            margin-top: var(--space-lg);
+        }
+
+        .main-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+        }
+
+        .pipeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+            border-bottom: 2px solid var(--light);
+        }
+
+        .filter-tab {
+            padding: var(--space-md) var(--space-lg);
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--medium);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .filter-tab:hover {
+            color: var(--navy-blue);
+        }
+
+        .filter-tab.active {
+            color: var(--aia-red);
+            border-bottom-color: var(--aia-red);
+        }
+
+        .leads-table {
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--background);
+        }
+
+        th {
+            text-align: left;
+            padding: var(--space-md) var(--space-lg);
+            font-weight: 600;
+            color: var(--navy-blue);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: var(--space-lg);
+            border-top: 1px solid var(--light);
+        }
+
+        tbody tr {
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background: rgba(228, 5, 33, 0.02);
+        }
+
+        .lead-name-cell {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .lead-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-full);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .lead-info h4 {
+            margin: 0;
+            font-size: 15px;
+            color: var(--navy-blue);
+            font-weight: 600;
+        }
+
+        .lead-info p {
+            margin: 4px 0 0 0;
+            font-size: 12px;
+            color: var(--medium);
+        }
+
+        .score-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .score-hot {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);
+            color: white;
+        }
+
+        .score-warm {
+            background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+            color: white;
+        }
+
+        .score-cold {
+            background: linear-gradient(135deg, #87CEEB 0%, #4682B4 100%);
+            color: white;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: var(--light);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .ltv-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .days-value {
+            font-size: 14px;
+            color: var(--medium);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="logo">
+                <span class="logo-icon">🎯</span>
+                <span>LeadPulseAI</span>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-ghost">
+                    <span>🔔</span>
+                    <span class="badge badge-danger" style="margin-left: 4px;">12</span>
+                </button>
+                <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                    <span style="font-size: 14px; color: var(--medium);">Agent Dashboard</span>
+                    <div class="avatar" style="width: 36px; height: 36px; font-size: 14px;">AD</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav>
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="calling.html" class="nav-item">
+                    <span>📞</span>
+                    <span>AI Calling Center</span>
+                </a>
+                <a href="leads-pipeline.html" class="nav-item active">
+                    <span>👥</span>
+                    <span>Leads Pipeline</span>
+                </a>
+                <a href="analytics.html" class="nav-item">
+                    <span>📊</span>
+                    <span>Analytics & ROI</span>
+                </a>
+                <a href="campaigns.html" class="nav-item">
+                    <span>🎯</span>
+                    <span>Campaigns</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>📅</span>
+                    <span>Calendar</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span>
+                    <span>Settings</span>
+                </a>
+                <div style="margin: var(--space-lg) 0; height: 1px; background: rgba(255,255,255,0.2);"></div>
+                <a href="demo-mode.html" class="nav-item demo">
+                    <span>🎬</span>
+                    <span>Demo Mode</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="pipeline-header">
+                <div>
+                    <h1 style="font-size: 32px; margin: 0 0 8px 0; color: var(--navy-blue);">Leads Pipeline</h1>
+                    <p style="color: var(--medium); margin: 0;">Manage and nurture all your insurance leads</p>
+                </div>
+                <div style="display: flex; gap: var(--space-md);">
+                    <button class="btn btn-ghost">
+                        <span>⬇️</span>
+                        <span>Export CSV</span>
+                    </button>
+                    <button class="btn btn-primary">
+                        <span>➕</span>
+                        <span>Add Lead</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterLeads('all')">
+                    All Leads <span class="badge badge-medium" style="margin-left: 8px;">5</span>
+                </button>
+                <button class="filter-tab" onclick="filterLeads('hot')">
+                    🔥 Hot <span class="badge badge-danger" style="margin-left: 8px;">3</span>
+                </button>
+                <button class="filter-tab" onclick="filterLeads('warm')">
+                    ☀️ Warm <span class="badge badge-warning" style="margin-left: 8px;">1</span>
+                </button>
+                <button class="filter-tab" onclick="filterLeads('cold')">
+                    ❄️ Cold <span class="badge badge-info" style="margin-left: 8px;">1</span>
+                </button>
+            </div>
+
+            <!-- Leads Table -->
+            <div class="leads-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lead</th>
+                            <th>Score</th>
+                            <th>Stage</th>
+                            <th>Trigger</th>
+                            <th>Conversion Prob.</th>
+                            <th>Est. LTV</th>
+                            <th>Days in Pipeline</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leadsTableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        // Combine all leads
+        const allLeads = [
+            {
+                ...sarahChen,
+                temperature: 'hot',
+                triggerIcon: '🍼',
+                triggerLabel: 'Pregnancy'
+            },
+            {
+                ...michaelTan,
+                temperature: 'warm',
+                triggerIcon: '💼',
+                triggerLabel: 'Career Milestone'
+            },
+            {
+                ...lindaWong,
+                temperature: 'hot',
+                triggerIcon: '🎂',
+                triggerLabel: 'Policy Anniversary'
+            },
+            {
+                ...davidLim,
+                temperature: 'hot',
+                triggerIcon: '🏠',
+                triggerLabel: 'Property Purchase'
+            },
+            {
+                ...amandaNg,
+                temperature: 'hot',
+                triggerIcon: '🚀',
+                triggerLabel: 'Career Change'
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function renderLeads(filter = 'all') {
+            const tbody = document.getElementById('leadsTableBody');
+            tbody.innerHTML = '';
+
+            const filtered = filter === 'all'
+                ? allLeads
+                : allLeads.filter(lead => lead.temperature === filter);
+
+            filtered.forEach(lead => {
+                const row = document.createElement('tr');
+                row.onclick = () => location.href = `lead-profile.html?id=${lead.id}`;
+
+                const scoreClass = lead.leadScore >= 85 ? 'score-hot' :
+                                 lead.leadScore >= 70 ? 'score-warm' : 'score-cold';
+
+                const tempBadge = lead.temperature === 'hot' ? 'badge-danger' :
+                                 lead.temperature === 'warm' ? 'badge-warning' : 'badge-info';
+
+                row.innerHTML = `
+                    <td>
+                        <div class="lead-name-cell">
+                            <div class="lead-avatar">${lead.firstName.charAt(0)}${lead.lastName.charAt(0)}</div>
+                            <div class="lead-info">
+                                <h4>${lead.firstName} ${lead.lastName}</h4>
+                                <p>${lead.age} • ${lead.location}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="score-badge ${scoreClass}">
+                            ${lead.leadScore}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge ${tempBadge}">${lead.stage}</span>
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 20px;">${lead.triggerIcon}</span>
+                            <span style="font-size: 13px; color: var(--medium);">${lead.triggerLabel}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">${lead.conversionProbability}%</div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: ${lead.conversionProbability}%;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ltv-value">$${(lead.estimatedLTV / 1000).toFixed(0)}K</div>
+                    </td>
+                    <td>
+                        <div class="days-value">${lead.daysInPipeline} days</div>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="event.stopPropagation(); location.href='lead-profile.html?id=${lead.id}'">
+                            👁️ View
+                        </button>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterLeads(filter) {
+            currentFilter = filter;
+
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            renderLeads(filter);
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            renderLeads('all');
+        });
+    </script>
+</body>
+</html>
